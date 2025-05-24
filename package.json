@@ -20,9 +20,7 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "homepage": "https://usmanshaik59.github.io/Stricbuzz"
-
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,5 +49,4 @@
   "devDependencies": {
     "gh-pages": "^6.1.1"
   }
-  
 }
