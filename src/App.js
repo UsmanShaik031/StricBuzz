@@ -11,7 +11,7 @@ import Chatbot from './Chatbot';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 
-const PASSWORD = '190';
+const PASSWORD = '807400@';
 
 const App = () => {
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
