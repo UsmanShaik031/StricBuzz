@@ -13,11 +13,6 @@ import MatchScore from './components/MatchScore';
 import UpdateMatchScore from './components/UpdateMatchScore';
 import Navbar from './components/Navbar';
 
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "./components/firebase";
-import { useNavigate } from 'react-router-dom';
-
-
 // Constant password
 const PASSWORD = '807400@';
 
@@ -34,12 +29,7 @@ const App = () => {
   const [error, setError] = useState('');
   const [showChatbot, setShowChatbot] = useState(() => localStorage.getItem('showChatbot') === 'true');
 
-  // Match Score State
-  // const [teamA, setTeamA] = useState('wc');
-  // const [teamB, setTeamB] = useState('aus');
-  // const [scoreA, setScoreA] = useState('');
-  // const [scoreB, setScoreB] = useState('');
-  // const [uploadStatus, setUploadStatus] = useState('');
+  
 
   // Refs for coin animation
   const coinRef = useRef(null);
@@ -75,29 +65,6 @@ const App = () => {
     setTails(0);
   };
 
-  // Upload to Firestore
-  // const uploadScore = async () => {
-  //   setUploadStatus('Uploading...');
-  //   try {
-  //     await setDoc(doc(db, "matches", "matched"), {
-  //       TeamA: teamA,
-  //       teamb: teamB,
-  //       ScoreA: scoreA,
-  //       ScoreB: scoreB,
-  //     });
-  //     setUploadStatus('Score updated successfully!');
-  //   } catch (error) {
-  //     setUploadStatus('Error updating score: ' + error.message);
-  //   }
-  // };
-
-//  const navigate = useNavigate();
-
-  // const logout = () => {
-  //   localStorage.removeItem('authenticated');
-  //   navigate('/login');  // instead of history.push('/login')
-  // };
-  // Handle login
   const handlePasswordSubmit = () => {
     const email = emailInput.trim().toLowerCase();
     const password = passwordInput.trim();
