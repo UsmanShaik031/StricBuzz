@@ -35,11 +35,11 @@ const App = () => {
   const [showChatbot, setShowChatbot] = useState(() => localStorage.getItem('showChatbot') === 'true');
 
   // Match Score State
-  const [teamA, setTeamA] = useState('wc');
-  const [teamB, setTeamB] = useState('aus');
-  const [scoreA, setScoreA] = useState('');
-  const [scoreB, setScoreB] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('');
+  // const [teamA, setTeamA] = useState('wc');
+  // const [teamB, setTeamB] = useState('aus');
+  // const [scoreA, setScoreA] = useState('');
+  // const [scoreB, setScoreB] = useState('');
+  // const [uploadStatus, setUploadStatus] = useState('');
 
   // Refs for coin animation
   const coinRef = useRef(null);
@@ -76,22 +76,22 @@ const App = () => {
   };
 
   // Upload to Firestore
-  const uploadScore = async () => {
-    setUploadStatus('Uploading...');
-    try {
-      await setDoc(doc(db, "matches", "matched"), {
-        TeamA: teamA,
-        teamb: teamB,
-        ScoreA: scoreA,
-        ScoreB: scoreB,
-      });
-      setUploadStatus('Score updated successfully!');
-    } catch (error) {
-      setUploadStatus('Error updating score: ' + error.message);
-    }
-  };
+  // const uploadScore = async () => {
+  //   setUploadStatus('Uploading...');
+  //   try {
+  //     await setDoc(doc(db, "matches", "matched"), {
+  //       TeamA: teamA,
+  //       teamb: teamB,
+  //       ScoreA: scoreA,
+  //       ScoreB: scoreB,
+  //     });
+  //     setUploadStatus('Score updated successfully!');
+  //   } catch (error) {
+  //     setUploadStatus('Error updating score: ' + error.message);
+  //   }
+  // };
 
- const navigate = useNavigate();
+//  const navigate = useNavigate();
 
   // const logout = () => {
   //   localStorage.removeItem('authenticated');
