@@ -32,16 +32,17 @@ const ProfileUpload = ({ label, storageKey }) => {
   };
 
   return (
-    <div
-      style={{
-        marginLeft:'-14px',
-        position: 'relative',
-        width: '140px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
+<div
+  style={{
+    marginLeft: '30px',
+    position: 'relative',
+    width: '140px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }}
+>
+
       {image && (
         <IconButton
           onClick={handleRemove}
@@ -49,7 +50,7 @@ const ProfileUpload = ({ label, storageKey }) => {
           style={{
             position: 'absolute',
             top: '-10px',
-            right: '-10px',
+            right: '1px',
             backgroundColor: '#ffe6e6',
             zIndex: 1,
           }}
@@ -72,6 +73,7 @@ const ProfileUpload = ({ label, storageKey }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          marginLeft:'-30px'
         }}
         onClick={handleUploadClick}
       >

@@ -136,6 +136,7 @@ button {
 #flip-button {
   background-color: #d32f2f;
   color: white;
+  margin-right: 8px;
 }
 
 #flip-button:disabled {
@@ -145,18 +146,19 @@ button {
 }
 
 #reset-button {
-  background-color: white;
-  border: 2px solid #d32f2f;
-  color: #d32f2f;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #1f8944;
+  color: #419c3e;
 }
 
 #reset-button:hover {
-  background-color: #fbe9e7;
+  background-color: #ffffff;
 }
 
 .footer {
   text-align: center;
-  margin-top: 40px; /* reasonable margin */
+  margin-top: 30px; /* reasonable margin */
+  margin-Bottom: 30px; /* reasonable margin */
   font-size: 14px;
   color: #555;
 }
@@ -232,15 +234,21 @@ button {
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
   .buttons {
+    display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 20px; /* Make it consistent */
-  } 
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px; /* Consistent spacing between buttons */
+    padding: 10px;
+  }
+
+
 
   .buttons {
     flex-direction: row;
     justify-content: center;
-    gap: 46px;
+    gap: 56px;
   }
 
   button {
@@ -256,6 +264,27 @@ button {
   .title {
     font-size: 22px;
   }
+.profile-upload-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* space between profiles and VS */
+  margin-top: 20px;
+}
+
+.vs-circle {
+  font-weight: bold;
+  font-size: 18px;
+  background-color:transparent;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
   .container {
     padding: 24px 16px;
@@ -276,7 +305,7 @@ button {
 
 @media screen and (max-width: 480px) {
   .title {
-    font-size: 20px;
+    font-size: 10px;
   }
 
   .coin {

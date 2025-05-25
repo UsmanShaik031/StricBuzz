@@ -1,0 +1,22 @@
+.update-match-score-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.input-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.input-row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .input-row {
+    flex-direction: column;
+  }
+}

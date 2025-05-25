@@ -1,0 +1,26 @@
+.top-header {
+  background-color: #0e0e0e; /* Very dark background */
+  padding: 80px 20px  20px;
+  color: #ffffff;
+  /* border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px; */
+  /* margin-bottom: '-20px'; */
+}
+
+.back-icon {
+  margin-bottom: 20px;
+  margin-Top: -40px;
+}
+
+.main-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #999999;
+  margin-top: 10px;
+  /* margin-bottom: -8px; */
+}
