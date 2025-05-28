@@ -21,11 +21,11 @@ const Squads = () => {
     const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
     const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
     const coinRef = useRef(null);
-    const [authenticated, setAuthenticated] = useState(() => localStorage.getItem('authenticated') === 'true');
-    const handleLogout = () => {
-    localStorage.removeItem('authenticated'); // remove persisted auth
-    setAuthenticated(false);  // this triggers re-render to login screen
-  };
+const handleLogout = () => {
+  localStorage.removeItem('authenticated'); // Remove persisted auth
+  window.location.reload(); // Reload to reflect the logout state (optional)
+};
+
   const leftPlayers = [
    
     { id: 2, name: 'Kareem S(WK)', role: 'WK-Batter', img: '/images/1.jpg' },

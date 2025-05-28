@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useCallback} from "react";
 import {
   Box,
   Table,
@@ -60,38 +60,35 @@ const Scoreboard = () => {
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const coinRef = useRef(null);
-  const [authenticated, setAuthenticated] = useState(() => localStorage.getItem('authenticated') === 'true');
-  const handleLogout = () => {
-  localStorage.removeItem('authenticated'); // remove persisted auth
-  setAuthenticated(false);  // this triggers re-render to login screen
+const handleLogout = () => {
+  localStorage.removeItem('authenticated'); // Remove persisted auth
+  window.location.reload(); // Reload to reflect the logout state (optional)
 };
 
   // Firestore reference to scoreboard collection
   const scoreboardRef = collection(db, "matches", "matched", "Scoreboard");
+const fetchPlayers = useCallback(async () => {
+  try {
+    setLoading(true);
+    const snapshot = await getDocs(scoreboardRef);
+    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setPlayers(data);
+  } catch (error) {
+    console.error("Error fetching players:", error);
+    setSnackbar({
+      open: true,
+      message: "Failed to fetch players.",
+      severity: "error",
+    });
+  } finally {
+    setLoading(false);
+  }
+}, [scoreboardRef, setLoading, setPlayers, setSnackbar]); 
+// Make sure you include all stable dependencies here (or omit if they're guaranteed stable)
 
-  // Fetch players from Firestore
-  const fetchPlayers = async () => {
-    try {
-      setLoading(true);
-      const snapshot = await getDocs(scoreboardRef);
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setPlayers(data);
-    } catch (error) {
-      console.error("Error fetching players:", error);
-      setSnackbar({
-        open: true,
-        message: "Failed to fetch players.",
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch players on component mount
-  useEffect(() => {
-    fetchPlayers();
-  }, []);
+useEffect(() => {
+  fetchPlayers();
+}, [fetchPlayers]);
 
   // Handle input changes in the form
   const handleChange = (e) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import {
     Box,
     Table,
@@ -60,31 +60,31 @@ const PointsTable = () => {
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const coinRef = useRef(null);
-  const [authenticated, setAuthenticated] = useState(() => localStorage.getItem('authenticated') === 'true');
-  const handleLogout = () => {
-  localStorage.removeItem('authenticated'); // remove persisted auth
-  setAuthenticated(false);  // this triggers re-render to login screen
+const handleLogout = () => {
+  localStorage.removeItem('authenticated'); // Remove persisted auth
+  window.location.reload(); // Reload to reflect the logout state (optional)
 };
+
     const teamsRef = collection(db, "pointsTable");
 
-    const fetchTeams = async () => {
-        setLoading(true);
-        try {
-            const snapshot = await getDocs(teamsRef);
-            const teamsList = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setTeams(teamsList);
-        } catch (error) {
-            console.error("Error fetching teams:", error);
-        }
-        setLoading(false);
-    };
+ const fetchTeams = useCallback(async () => {
+  setLoading(true);
+  try {
+    const snapshot = await getDocs(teamsRef);
+    const teamsList = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setTeams(teamsList);
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+  }
+  setLoading(false);
+}, [teamsRef]); // teamsRef needs to be in dependencies if it's a variable
 
-    useEffect(() => {
-        fetchTeams();
-    }, []);
+useEffect(() => {
+  fetchTeams();
+}, [fetchTeams]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
