@@ -67,7 +67,7 @@ const handleLogout = () => {
 };
 
   // Firestore reference to scoreboard collection
- const scoreboardRef = useMemo(() => collection(db, "matches", "matched", "Scoreboard"), [db]);
+ const scoreboardRef = useMemo(() => collection(db, "matches", "matched", "Scoreboard"), []);
 const fetchPlayers = useCallback(async () => {
     try {
       setLoading(true);
