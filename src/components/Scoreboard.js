@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef , useCallback} from "react";
+import React, { useState, useEffect, useRef , useCallback, useMemo} from "react";
 import {
   Box,
   Table,
@@ -60,31 +60,36 @@ const Scoreboard = () => {
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const coinRef = useRef(null);
+  
 const handleLogout = () => {
   localStorage.removeItem('authenticated'); // Remove persisted auth
   window.location.reload(); // Reload to reflect the logout state (optional)
 };
 
   // Firestore reference to scoreboard collection
-  const scoreboardRef = collection(db, "matches", "matched", "Scoreboard");
+ const scoreboardRef = useMemo(() => collection(db, "matches", "matched", "Scoreboard"), [db]);
 const fetchPlayers = useCallback(async () => {
-  try {
-    setLoading(true);
-    const snapshot = await getDocs(scoreboardRef);
-    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setPlayers(data);
-  } catch (error) {
-    console.error("Error fetching players:", error);
-    setSnackbar({
-      open: true,
-      message: "Failed to fetch players.",
-      severity: "error",
-    });
-  } finally {
-    setLoading(false);
-  }
-}, [scoreboardRef, setLoading, setPlayers, setSnackbar]); 
-// Make sure you include all stable dependencies here (or omit if they're guaranteed stable)
+    try {
+      setLoading(true);
+      const snapshot = await getDocs(scoreboardRef);
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setPlayers(data);
+    } catch (error) {
+      console.error("Error fetching players:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to fetch players.",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [scoreboardRef]);
+
+  useEffect(() => {
+    fetchPlayers();
+  }, [fetchPlayers]);
+
 
 useEffect(() => {
   fetchPlayers();

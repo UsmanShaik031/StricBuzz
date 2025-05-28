@@ -64,23 +64,20 @@ const handleLogout = () => {
   localStorage.removeItem('authenticated'); // Remove persisted auth
   window.location.reload(); // Reload to reflect the logout state (optional)
 };
+const teamsRef = React.useMemo(() => collection(db, "pointsTable"), []);
 
-    const teamsRef = collection(db, "pointsTable");
-
- const fetchTeams = useCallback(async () => {
+const fetchTeams = useCallback(async () => {
   setLoading(true);
   try {
     const snapshot = await getDocs(teamsRef);
-    const teamsList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const teamsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setTeams(teamsList);
   } catch (error) {
     console.error("Error fetching teams:", error);
+  } finally {
+    setLoading(false);
   }
-  setLoading(false);
-}, [teamsRef]); // teamsRef needs to be in dependencies if it's a variable
+}, [teamsRef]);
 
 useEffect(() => {
   fetchTeams();

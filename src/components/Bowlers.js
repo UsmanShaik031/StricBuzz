@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect,useCallback ,useMemo} from "react";
 import {
   Box,
   Table,
@@ -46,8 +46,7 @@ const Bowlers = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "info" });
 
   // Reference to Firestore collection
-  const bowlersRef = collection(db, "matches", "matched", "Bowlers");
-
+ const bowlersRef = React.useMemo(() => collection(db, "matches", "matched", "Bowlers"), []);
 const fetchBowlers = useCallback(async () => {
   setLoading(true);
   try {
