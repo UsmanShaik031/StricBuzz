@@ -9,7 +9,7 @@ const TopHeader = () => {
               <h1 className="main-title">Go ahead and set up your account</h1>
       </div>
 
-       <p  className="subtitle">Weleome to Street Premier League, Login to enjoy the StricBuzz Experience... </p>
+       <p  className="subtitle">Weleome to StricBuzz, Login to enjoy the Stric Premier League Experience... </p>
       <p className="subtitle"></p>
     </div>
   );

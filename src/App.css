@@ -62,6 +62,7 @@ html, body {
   top: auto;
   left: auto;
   transform: none;
+  
 
   background: #e1f5fe;
   width: 90%;
@@ -72,7 +73,7 @@ html, body {
   text-align: center;
   min-height: 30  0px;
   z-index: auto; /* remove high z-index */
-  margin: 20px auto; /* center horizontally with margin */
+  margin: -20px auto; /* center horizontally with margin */
 }
 
 .title {
@@ -271,6 +272,7 @@ button {
   align-items: center;
   gap: 15px; /* space between profiles and VS */
   margin-top: 20px;
+  margin-bottom: -75px;
 }
 
 .vs-circle {
@@ -283,6 +285,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: '-100px';
 }
 
 

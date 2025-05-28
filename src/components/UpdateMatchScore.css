@@ -1,7 +1,9 @@
 .update-match-score-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
+  min-height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 'none';
 }
 
 .input-row {

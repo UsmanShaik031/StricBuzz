@@ -26,13 +26,14 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const profileImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
+
 const UserLogin = ({email, password, setEmail, setPassword, onSubmit, error, clearError }) => {
   const [tab, setTab] = useState('login');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 const [showSnackbar, setShowSnackbar] = useState(false);
  const [showPassword, setShowPassword] = useState(false);
 const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
-
+  const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
@@ -114,7 +115,7 @@ const handleCloseSnackbar = () => {
             mt={-2}
             mb={-7}
             width={120}
-            height={110}
+            height={120}
             borderRadius="50%"
             overflow="hidden"
             boxShadow="0 0 10px rgba(0,0,0,0.15)"
@@ -129,7 +130,7 @@ const handleCloseSnackbar = () => {
               alt={`Profile ${currentImageIndex + 1}`}
               style={{
                 width: '100%',
-                height: '100%',
+                height: '110%',
                 objectFit: 'cover',
                 transition: 'opacity 0.5s ease-in-out',
               }}
@@ -311,11 +312,11 @@ const handleCloseSnackbar = () => {
 
 
 
-          {/* Branding */}
+     <div>     {/* Branding */}
           <Typography
             variant="h6"
             style={{
-              marginTop: '35px',
+              marginTop: '42px',
               marginBottom: '-35*px',
               fontWeight: 'bold',
               letterSpacing: '1px',
@@ -328,9 +329,10 @@ const handleCloseSnackbar = () => {
           <Typography
             variant="body2"
             align="center"
+            mb={2}
             style={{
               marginTop: '10px',
-              marginBottom: '-165px',
+              marginBottom: '-185px',
               fontWeight: '500',
               letterSpacing: '0.5px',
               color: '#555',
@@ -338,7 +340,7 @@ const handleCloseSnackbar = () => {
           >
             © {new Date().getFullYear()}. All rights reserved.
           </Typography>
-
+</div>
         </Box>
       </Box>
     </>

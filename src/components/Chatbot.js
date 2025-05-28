@@ -1,29 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Container, ListGroup } from 'react-bootstrap';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  Paper
+} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import './Chatbot.css'; // Your custom CSS
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import CloseIcon from '@mui/icons-material/Close';
+import './Chatbot.css';
+
+const STORAGE_KEY = 'chatbot_messages';
 
 const Chatbot = ({ onClose }) => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const savedMessages = saved ? JSON.parse(saved) : null;
+
+      if (Array.isArray(savedMessages) && savedMessages.length > 0) {
+        return savedMessages;
+      } else {
+        const defaultMsg = [{
+          text: 'Hi! This feature will be available in further releases. Stay Tuned!',
+          sender: 'bot',
+        }];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultMsg));
+        return defaultMsg;
+      }
+    } catch (err) {
+      console.error('Error loading messages from storage:', err);
+      return [{
+        text: 'Hi! This feature will be available in further releases. Stay Tuned!',
+        sender: 'bot',
+      }];
+    }
+  });
+
   const chatContainerRef = useRef(null);
 
-useEffect(() => {
-  const container = chatContainerRef.current;
-  if (container) {
-    container.scrollTop = container.scrollHeight;
-  }
-}, [messages]);
-
-
+  // Save messages and scroll to bottom when updated
   useEffect(() => {
-    const defaultBotMessage = {
-      text: 'This feature will be available in V4.0.1.0 Release',
-      sender: 'bot',
-    };
-    setMessages([defaultBotMessage]);
-  }, []);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,47 +64,82 @@ useEffect(() => {
   };
 
   const handleContainerClick = (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent overlay click from closing chatbot
   };
 
   return (
-    <div className="chatbot-overlay" onClick={() => {}}>
-      <div className="chatbot-container" onClick={handleContainerClick}>
-        <div className="chatbot-header">
-          <h2>𝐒𝐭𝐫𝐢𝐜𝐁𝐨𝐭</h2>
-          <button onClick={onClose} className="close-button">
-            &times;
-          </button>
-        </div>
+    <div className="chatbot-overlay" onClick={onClose}>
+      <Box className="chatbot-container" onClick={handleContainerClick}>
+        {/* Header */}
+        <Box className="chatbot-header" display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" alignItems="center" gap={1}>
+            <SmartToyIcon fontSize="large" />
+            <Typography variant="h5" fontWeight={600}>
+              StricBot
+            </Typography>
+          </Box>
+          <IconButton onClick={onClose} className="close-button" sx={{ marginLeft: 'auto', paddingRight: 0 }}>
+            <CloseIcon fontSize="large" />
+          </IconButton>
+        </Box>
 
-        <Container className="chat-messages" ref={chatContainerRef}>
-          <ListGroup>
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`message-container ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}
-              >
-                <ListGroup.Item className="chat-message">{msg.text}</ListGroup.Item>
-              </div>
-            ))}
-          </ListGroup>
-        </Container>
+        {/* Messages */}
+        <Box className="chat-messages" ref={chatContainerRef}>
+          {messages.map((msg, index) => (
+            <Box
+              key={index}
+              className={`message-container ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}
+            >
+              <Paper elevation={2} className="chat-message">
+                {msg.text}
+              </Paper>
+            </Box>
+          ))}
+        </Box>
 
-        <Form onSubmit={handleSubmit} className="chat-input-container">
-          <Form.Group controlId="message" className="message-input-container">
-            <Form.Control
-              type="text"
-              placeholder="Type your message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              autoComplete="off"
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="btn send-btn">
+        {/* Input */}
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          className="chat-input-container"
+          mb={0.3}
+          mt={2}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Type your message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            autoComplete="off"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '25px',
+              },
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              width: 65,
+              height: 55,
+              minWidth: 0,
+              borderRadius: '50%',
+              backgroundColor: '#45b7d1',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              '&:hover': {
+                backgroundColor: '#2ca3be',
+              },
+            }}
+          >
             <FontAwesomeIcon icon={faPaperPlane} />
           </Button>
-        </Form>
-      </div>
+        </Box>
+      </Box>
     </div>
   );
 };

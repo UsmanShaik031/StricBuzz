@@ -39,7 +39,8 @@ const ProfileUpload = ({ label, storageKey }) => {
     width: '140px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom:'92px'
   }}
 >
 
@@ -60,23 +61,24 @@ const ProfileUpload = ({ label, storageKey }) => {
         </IconButton>
       )}
 
-      <div
-        style={{
-          width: '100px',
-          height: '100px',
-          borderRadius: '50%',
-          border: '2px solid black',
-          overflow: 'hidden',
-          backgroundColor: 'white',
-          position: 'relative',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginLeft:'-30px'
-        }}
-        onClick={handleUploadClick}
-      >
+  <div
+  style={{
+    width: '100px',
+    height: '100px',
+    borderRadius: '50%',
+    border: image ? '2px solid black' : 'none', // Conditional border
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    position: 'relative',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: '-30px',
+  }}
+  onClick={handleUploadClick}
+>
+
         {image ? (
           <img
             src={image}
@@ -87,7 +89,7 @@ const ProfileUpload = ({ label, storageKey }) => {
           <Typography
             variant="caption"
             color="textSecondary"
-            style={{ textAlign: 'center' }}
+            style={{ textAlign: 'center', fontSize:'14px' }}
           >
             Upload
           </Typography>
