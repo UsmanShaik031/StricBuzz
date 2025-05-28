@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import {
   Box,
   Table,
@@ -48,25 +48,24 @@ const Bowlers = () => {
   // Reference to Firestore collection
   const bowlersRef = collection(db, "matches", "matched", "Bowlers");
 
-  // Fetch bowlers on component mount
-  useEffect(() => {
-    fetchBowlers();
-  }, []);
+const fetchBowlers = useCallback(async () => {
+  setLoading(true);
+  try {
+    const snapshot = await getDocs(bowlersRef);
+    const fetchedBowlers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setBowlers(fetchedBowlers);
+  } catch (error) {
+    console.error("Error fetching bowlers:", error);
+    setSnackbar({ open: true, message: "Failed to fetch bowlers.", severity: "error" });
+  } finally {
+    setLoading(false);
+  }
+}, [bowlersRef]);
 
-  // Fetch bowlers from Firestore
-  const fetchBowlers = async () => {
-    setLoading(true);
-    try {
-      const snapshot = await getDocs(bowlersRef);
-      const fetchedBowlers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setBowlers(fetchedBowlers);
-    } catch (error) {
-      console.error("Error fetching bowlers:", error);
-      setSnackbar({ open: true, message: "Failed to fetch bowlers.", severity: "error" });
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  fetchBowlers();
+}, [fetchBowlers]);
+
 
   // Handle form input changes
   const handleChange = (e) => {

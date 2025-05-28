@@ -1,45 +1,35 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {
-  Typography,Divider, Box
+  Typography, Box
 } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
-import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 import Footer from './components/Footer';
 import UserLogin from './components/UserLogin';
-import ProfileUpload from './components/ProfileUpload';
 import Chatbot from './components/Chatbot';
 import MatchScore from './components/MatchScore';
 import UpdateMatchScore from './components/UpdateMatchScore';
 import Navbar from './components/Navbar';
 import LoadingScreen from './components/LoadingScreen';
-// Constant password
+
+
 const PASSWORD = '807400@';
 
 const Home = () => {
-  // Coin state
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const [loading, setLoading] = useState(true);
-
-
-  // UI & Auth state
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [authenticated, setAuthenticated] = useState(() => localStorage.getItem('authenticated') === 'true');
   const [emailInput, setEmailInput] = useState('');
   const [error, setError] = useState('');
   const [showChatbot, setShowChatbot] = useState(() => localStorage.getItem('showChatbot') === 'true');
-  const [selectedComponent, setSelectedComponent] = useState('');
-  const chatButtonRef = useRef(null);
 
-  // Refs for coin animation
   const coinRef = useRef(null);
   const flipBtnRef = useRef(null);
   const flipSoundRef = useRef(null);
-
-  // Flip coin logic
   const flipCoin = () => {
     const isHeads = Math.random() < 0.5;
 

@@ -1,30 +1,22 @@
 // src/Navbar.js
-import React, { useState} from 'react';
+import React, { } from 'react';
 import {
   Drawer,
   IconButton,
   List,
   ListItem,ListItemIcon,
-  ListItemText,  Divider,
+  ListItemText,  
   Typography,
-  AppBar,  Collapse,
+  AppBar, 
   Toolbar,
   Box,
   Button as MUIButton,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import NoteIcon from '@mui/icons-material/Note';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import EmailIcon from '@mui/icons-material/Email';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
-import RestoreIcon from '@mui/icons-material/Restore';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +30,6 @@ const Navbar = ({
   coinRef,
   onLogout, // new prop callback to notify parent about logout
 }) => {  
-  const [emailOpen, setEmailOpen] = useState(false);
 
   const resetGame = () => {
     if (coinRef?.current) coinRef.current.style.animation = 'none';
@@ -46,12 +37,6 @@ const Navbar = ({
     setTails(0);
   };
 
-  const menuItems = [
-    { title: 'Score board', desc: 'Showing scores and rankings.' },
-    { title: 'Squads', desc: 'Manage your teams and members.' },
-    { title: 'Points table', desc: 'Current points and statistics.' },
-    { title: 'Teams', desc: 'Overview of all teams.' },
-  ];
 const navigate = useNavigate();
 const navItems = [
   { label: 'Home', path: '/' },

@@ -33,7 +33,6 @@ const UserLogin = ({email, password, setEmail, setPassword, onSubmit, error, cle
 const [showSnackbar, setShowSnackbar] = useState(false);
  const [showPassword, setShowPassword] = useState(false);
 const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
-  const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);

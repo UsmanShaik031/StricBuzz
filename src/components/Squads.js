@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Box, Typography, Avatar, Divider } from '@mui/material';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -18,7 +18,6 @@ const PlayerInfo = ({ name, role, align = 'left' }) => (
 
 const Squads = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-    const scrollContainerRef = useRef(null);
     const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
     const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
     const coinRef = useRef(null);

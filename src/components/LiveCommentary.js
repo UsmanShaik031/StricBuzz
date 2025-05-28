@@ -75,7 +75,6 @@ export default function LiveCommentary() {
   return (
 <div style={{    maxWidth: '100%',
     width: '100%',
-    height: '180%',
     mt: 6,
     p: 2,
     mb: 6,

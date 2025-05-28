@@ -11,7 +11,6 @@ import {
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import ShieldIcon from '@mui/icons-material/Shield';
 import GavelIcon from '@mui/icons-material/Gavel';
 
 const Footer = () => {

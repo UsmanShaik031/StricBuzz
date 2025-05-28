@@ -32,7 +32,6 @@ import {
     deleteDoc,
     doc,
 } from "firebase/firestore";
-import Footer from "./Footer";
 import { db } from "./firebase"; // update the path as needed
 import Navbar from "./Navbar";
 const PointsTable = () => {
@@ -58,7 +57,6 @@ const PointsTable = () => {
         severity: "info",
     });
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const scrollContainerRef = useRef(null);
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const coinRef = useRef(null);
