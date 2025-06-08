@@ -55,12 +55,14 @@ const Home = () => {
 
     flipBtnRef.current.disabled = true;
   };
- useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
-    }, 2000); // Change every 2 seconds
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
+  }, 2000); // Change every 2 seconds
+
+  return () => clearInterval(interval);
+}, [profileImages.length]);
+
   const resetGame = () => {
     if (coinRef.current) coinRef.current.style.animation = 'none';
     setHeads(0);
