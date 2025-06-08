@@ -241,7 +241,7 @@ useEffect(() => {
           coinRef={coinRef}
           onLogout={handleLogout}
         />
-    <Box sx={{ width: { xs: "100%", sm: "90%", md: 900 }, mx: "auto", mt: 2 }}>
+    <Box sx={{ width: { xs: "100%", sm: "90%", md: 900 }, mx: "auto", mt: 10 }}>
       {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}

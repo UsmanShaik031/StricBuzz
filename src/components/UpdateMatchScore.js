@@ -57,9 +57,9 @@ export default function UpdateMatchScore() {
   };
 
   return (
-    <Box className="update-match-score-container" sx={{ display: 'flex', justifyContent: 'center', mt: -5, ml: 3 }}>
+    <Box className="update-match-score-container" sx={{ display: 'flex', justifyContent: 'center', mt: -5, ml: 6 }}>
       <Paper elevation={3} sx={{ p: 4, boxShadow: 'none', width: '100%', maxWidth: 400 }}>
-        <Typography variant="h5" textAlign="center" ml={-2} fontWeight="bold" gutterBottom>
+        <Typography variant="h5" textAlign="center" ml={-6} fontWeight="bold" gutterBottom>
           Update Match Score
         </Typography>
 

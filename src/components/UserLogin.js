@@ -9,8 +9,11 @@ import {
   IconButton,
   InputAdornment,
   Paper,
-  GlobalStyles
+  GlobalStyles, Divider
 } from '@mui/material';
+import { FcGoogle } from 'react-icons/fc'; // Colored Google icon
+import { signOut } from "firebase/auth";
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { Visibility, VisibilityOff, Email, Lock} from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,6 +28,8 @@ import img8 from '../images/8.jpg';
 import img9 from '../images/9.jpg';
 import img10 from '../images/10.jpg';
 import img11 from '../images/11.jpg';
+import { setPersistence, browserLocalPersistence } from "firebase/auth";
+
 import { useNavigate } from 'react-router-dom';
 import { sendEmailVerification } from "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -96,6 +101,9 @@ const handleAuth = async () => {
   }
 
   try {
+    // Set persistence to local storage to ensure auth state is saved properly
+    await setPersistence(auth, browserLocalPersistence);
+
     if (tab === 'login') {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -124,11 +132,26 @@ const handleAuth = async () => {
         createdAt: new Date(),
       });
 
+      await user.reload(); // force refresh user info before verification email
+
       await sendEmailVerification(user);
+   setSnackbarSeverity('success');
+      setSnackbarMessage('Registration successful! A verification email has been sent.');
+      setSnackbarOpen(true);
+      // Small delay to ensure Firebase updates internal auth state
+      await new Promise(res => setTimeout(res, 500));
+
+      // Sign out immediately after signup
+      await signOut(auth);
 
       setSnackbarSeverity('success');
       setSnackbarMessage('Registration successful! A verification email has been sent.');
       setSnackbarOpen(true);
+      
+      // Optional: switch to login tab and clear input fields after signup
+      setTab('login');
+      setEmail('');
+      setPassword('');
     }
   } catch (err) {
     console.error("Authentication error:", err);
@@ -309,7 +332,7 @@ const handleAuth = async () => {
           <Box
             sx={{
               position: 'fixed',
-              top: 10,
+              top: 20,
               left: 5,
               zIndex: 9999,
               userSelect: 'none',
@@ -322,7 +345,7 @@ const handleAuth = async () => {
             }}
           >
             {/* Logo and STRICBUZZ side by side */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <Typography
                 variant="h5"
                 sx={{
@@ -332,7 +355,7 @@ const handleAuth = async () => {
                   color: '#c74859',
                 }}
               >
-                🏏🇸‌🇹‌🇷‌🇮‌🇨‌🇧‌🇺‌🇿‌🇿‌
+                🏏𝐒𝐭𝐫𝐢𝐜𝐁𝐮𝐳𝐳
               </Typography>
 
               {/* <Box
@@ -358,19 +381,7 @@ const handleAuth = async () => {
             >
               Best Street Cricket Experience Ever
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 500,
-                fontSize: '0.9rem',
-                mt: 0.5,
-                ml: 1.7,
-                opacity: 0.8,
-                color: 'red'
-              }}
-            >
-              Note : After successful sign up please refresh the page before doing Sign in...
-            </Typography>
+           
           </Box>
 
 
@@ -618,7 +629,6 @@ const handleAuth = async () => {
 
 
               <Button
-                fullWidth
                 variant="contained"
                 onClick={handleAuth} // ✅ Updated this line
                 sx={{
@@ -628,6 +638,7 @@ const handleAuth = async () => {
                   fontWeight: 'bold',
                   borderRadius: 30,
                   py: 1.2,
+                  width:'150px',
                   textTransform: 'uppercase',
                   fontSize: '0.9rem',
                   boxShadow: '0px 6px 15px rgba(123, 31, 162, 0.3)',
@@ -635,13 +646,73 @@ const handleAuth = async () => {
               >
                 {tab === 'login' ? 'Sign In' : 'Sign Up'}
               </Button>
+   <Box
+      sx={{
+        border: 'none',
+        borderRadius: 2,
+        padding: 2,
+        textAlign: 'center',
+        maxWidth: 400,
+        margin: 'auto',
+        backgroundColor: 'transparent',
+      }}
+    >
+      {/* Divider with text in center */}
+      <Box display="flex" alignItems="center" mb={2}>
+        <Divider sx={{ flexGrow: 1 }} />
+        <Typography sx={{ mx: 2, color: '#888' }} variant="body2">
+          or Sign In with
+        </Typography>
+        <Divider sx={{ flexGrow: 1 }} />
+      </Box>
 
+      {/* Social Buttons */}
+      <Box display="flex" justifyContent="center" gap={2}>
+        <Button
+          variant="outlined"
+        startIcon={<FcGoogle />} 
+          sx={{
+            textTransform: 'none',
+            backgroundColor: '#f1f6ff',
+            borderRadius: 2,
+            borderColor: '#e0e0e0',
+            color: '#000', // keep text black
+            width: 120,
+            '&:hover': {
+              backgroundColor: '#e3f2fd',
+            },
+          }}
+        >
+          Google
+        </Button>
+
+        <Button
+          variant="outlined"
+          startIcon={<FacebookIcon sx={{ color: '#1877F2' }} />}
+          sx={{
+            textTransform: 'none',
+            backgroundColor: '#f1f6ff',
+            borderRadius: 2,
+            borderColor: '#e0e0e0',
+            color: '#1877F2', // Facebook blue text
+            width: 120,
+            '&:hover': {
+              backgroundColor: '#e3f2fd',
+            },
+          }}
+        >
+          Facebook
+        </Button>
+      </Box>
+    </Box>
             </Paper>
           </motion.div>
         </AnimatePresence>
       </Box>
+       
+    
       <Box
-        mt={-23}
+        mt={-29}
         mb={-7}
         width={120}
         height={120}
@@ -652,7 +723,7 @@ const handleAuth = async () => {
         justifyContent="center"
         alignItems="center"
         // mx="auto"
-        ml={"125px"}
+        ml={"155px"}
       >
         <img
           src={profileImages[currentImageIndex]}
@@ -672,7 +743,7 @@ const handleAuth = async () => {
           fontWeight: 500,
           fontSize: '0.9rem',
           mt: 9,
-          ml: 13,
+          ml: 16,
           mb: 2,
           opacity: 0.8,
           color: 'black'

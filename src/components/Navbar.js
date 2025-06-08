@@ -46,7 +46,8 @@ const navItems = [
 ];
   return (
     <>
-      <AppBar position="static" style={{ background: 'white' }}>
+      <AppBar position="fixed" style={{ background: 'white', zIndex: 1300, top: 0, left: 0, right: 0, }}>
+
         <Toolbar>
           <IconButton edge="start" sx={{ color: 'black' }} onClick={() => setDrawerOpen(true)}>
             <SettingsIcon />

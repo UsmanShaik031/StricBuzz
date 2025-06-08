@@ -20,7 +20,14 @@ const Snaps = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [visible, setVisible] = useState({});
   const refs = useRef([]);
-
+ const [drawerOpen, setDrawerOpen] = useState(false);
+    const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
+    const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
+    const coinRef = useRef(null);
+const handleLogout = () => {
+  localStorage.removeItem('authenticated'); // Remove persisted auth
+  window.location.reload(); // Reload to reflect the logout state (optional)
+};
   useEffect(() => {
     refs.current = refs.current.slice(0, images.length);
 
@@ -46,8 +53,17 @@ const Snaps = () => {
 
   return (
    <div>
-   <Navbar/>
-     <Box sx={{ px: 3, py: 4 }}>
+  <Navbar
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+          heads={heads}
+          tails={tails}
+          setHeads={setHeads}
+          setTails={setTails}
+          coinRef={coinRef}
+          onLogout={handleLogout}
+        />
+     <Box sx={{ px: 3, py: 4 ,   marginTop: '70px',}}>
       <Typography variant="h5" fontWeight="bold" mb={4} color="#2c3e50" sx={{marginLeft:'24px'}}>
           Be Cool 😎 during SPL
       </Typography>

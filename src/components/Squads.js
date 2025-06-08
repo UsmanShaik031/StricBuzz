@@ -62,7 +62,7 @@ const handleLogout = () => {
 />
 
    <Box
-className="squads-container"
+className="squads-container" style={{   marginTop: '70px',}}
 >
   {/* Team Headers with VS */}
  <Box ml={3}>
@@ -78,13 +78,14 @@ className="squads-container"
       justifyContent: 'space-between',
       alignItems: 'center',
       mb: 3,
-      ml: '3px',
+      ml: '25px',
+      gap:'20px',
       width: '260px',
     }}
   >
     {/* Fire Team */}
-     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <img src="/assets/storm.gif" alt="Storm" width="30" height="30" style={{ marginRight: 8 }} />
+     <Box sx={{ display: 'flex', alignItems: 'center', marginLeft:'-20px' }}>
+      <img src="/assets/storm.gif" alt="Storm" width="30" height="30"  />
       <Typography variant="h6" fontWeight="bold" color="primary">
         Storm
       </Typography>
@@ -97,8 +98,8 @@ className="squads-container"
     </Typography>
 
     {/* Storm Team */}
-   <Box sx={{ display: 'flex', alignItems: 'center' ,gap:0.5}}>
-      <img src="/assets/fire.gif" alt="Fire" width="30" height="30" style={{  marginLeft:-10}} />
+   <Box sx={{ display: 'flex', alignItems: 'center' ,gap:0.5, marginRight:'-25px'}}>
+      <img src="/assets/fire.gif" alt="Fire" width="30" height="30" />
       <Typography variant="h6" fontWeight="bold" color="error">
         Fire
       </Typography>
