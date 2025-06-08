@@ -11,23 +11,14 @@ import {
   Paper,
   GlobalStyles, Divider
 } from '@mui/material';
+import Footer from './Footer';
 import { FcGoogle } from 'react-icons/fc'; // Colored Google icon
 import { signOut } from "firebase/auth";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { Visibility, VisibilityOff, Email, Lock} from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import { motion, AnimatePresence } from 'framer-motion';
-import img1 from '../images/1.jpg';
-import img2 from '../images/2.jpg';
-import img3 from '../images/3.jpg';
-import img4 from '../images/4.jpg';
-import img5 from '../images/5.jpg';
-import img6 from '../images/6.jpg';
-import img7 from '../images/7.jpg';
-import img8 from '../images/8.jpg';
-import img9 from '../images/9.jpg';
-import img10 from '../images/10.jpg';
-import img11 from '../images/11.jpg';
+
 import { setPersistence, browserLocalPersistence } from "firebase/auth";
 
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +29,7 @@ import { db, auth } from './firebase'; // ensure correct path
 import { sendPasswordResetEmail } from 'firebase/auth';
 // import Visibility from '@mui/icons-material/Visibility';
 // import VisibilityOff from '@mui/icons-material/VisibilityOff';
-const profileImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+
 
 const inputStyle = {
   mb: 2,
@@ -68,7 +59,7 @@ const UserLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   // const [error, setError] = useState('');
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+ 
   const handleTogglePassword = () => setShowPassword(!showPassword);
   const handleCloseSnackbar = () => setShowSnackbar(false);
   const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
@@ -77,17 +68,39 @@ const UserLogin = () => {
 const [snackbarOpen, setSnackbarOpen] = useState(false);
 const [snackbarMessage, setSnackbarMessage] = useState('');
 const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const variants = {
-    hidden: { opacity: 0, y: 40, rotateX: 10 },
-    visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.5 } },
-    exit: { opacity: 0, y: -30, rotateX: -10, transition: { duration: 0.4 } },
-  };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
-    }, 2000); // Change every 2 seconds
-    return () => clearInterval(interval);
-  }, []);
+const variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    rotateX: 20,
+    scale: 0.9,
+    filter: 'blur(4px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -40,
+    rotateX: -15,
+    scale: 0.9,
+    filter: 'blur(3px)',
+    transition: {
+      duration: 0.45,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+ 
 
 // Inside the UserLogin component
 const navigate = useNavigate();
@@ -329,60 +342,73 @@ const handleAuth = async () => {
         {/* Auth Toggle Button */}
         <Box sx={{ position: 'fixed', top: 35, right: 30, zIndex: 9999 }}>
           {/* Site Title + Description on Left */}
-          <Box
-            sx={{
-              position: 'fixed',
-              top: 20,
-              left: 5,
-              zIndex: 9999,
-              userSelect: 'none',
-              color: '#7b1fa2',
-              fontWeight: 'bold',
-              textAlign: 'left',
-              backgroundColor: 'transparent',
-              p: 1,
-              borderRadius: 1
-            }}
-          >
-            {/* Logo and STRICBUZZ side by side */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: 900,
-                  fontSize: '1.9rem',
-                  lineHeight: 1.3,
-                  color: '#c74859',
-                }}
-              >
-                🏏𝐒𝐭𝐫𝐢𝐜𝐁𝐮𝐳𝐳
-              </Typography>
+        <Box
+  sx={{
+    position: 'fixed',
+    top: 20,
+    left: 5,
+    zIndex: 9999,
+    userSelect: 'none',
+    backgroundColor: 'transparent',
+    p: 1,
+    borderRadius: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 2,
+  }}
+>
+  {/* Text Block: Logo, Title, Subtitle */}
+  <Box 
+    >
+    {/* Logo + Title */}
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 ,}}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 900,
+          fontSize: '1.9rem',
+          lineHeight: 1.3,
+          color: '#c74859',
+        }}
+      >
+        🏏𝐒𝐭𝐫𝐢𝐜𝐁𝐮𝐳𝐳
+      </Typography>
+    </Box>
 
-              {/* <Box
-    component="img"
-    src="/assets/stumps.png" // Replace with your actual path
-    alt="Logo"
-    sx={{ width: 40, height: 40, objectFit: 'contain' }}
-  /> */}
-            </Box>
+    {/* Subtitle */}
+    <Typography
+      variant="body2"
+      sx={{
+        fontWeight: 500,
+        fontSize: '0.9rem',
+        mt: 0.5,
+        ml: 0.5,
+        opacity: 0.8,
+        color: 'black',
+      }}
+    >
+      Best Street Cricket Experience Ever
+    </Typography>
+  </Box>
 
+  {/* Video on the right */}
+  <Box
+    component="video"
+    src="/assets/Wicket out.mp4" // Replace with your actual transparent video path
+    autoPlay
+    loop
+    muted
+    playsInline
+    sx={{
+      mt:-2
+,      width: 118,
+      height: 118,
+      objectFit: 'contain',
+    }}
+  />
+</Box>
 
-            {/* Subtitle */}
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 500,
-                fontSize: '0.9rem',
-                mt: 0.5,
-                ml: 1.7,
-                opacity: 0.8,
-                color: 'black'
-              }}
-            >
-              Best Street Cricket Experience Ever
-            </Typography>
-           
-          </Box>
 
 
           {/* Auth Toggle Button below on Right */}
@@ -434,19 +460,27 @@ const handleAuth = async () => {
 
         {/* Auth Card */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={tab}
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            style={{ width: '100%', maxWidth: 360, zIndex: 1 }}
-          >
+        <motion.div
+  key={tab}
+  variants={variants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  style={{
+    width: '100%',
+    maxWidth: 360,
+    zIndex: 1,
+    boxShadow: 'none',
+    borderRadius: '12px',
+    background: 'transparent',
+    transformStyle: 'preserve-3d',
+  }}
+>
             <Paper
               elevation={3}
               sx={{
                 p: 4,
-                mt: -11,
+                mt: -9,
                 borderRadius: 5,
                 backgroundColor: 'none',
                 backdropFilter: 'blur(25px)',
@@ -455,7 +489,7 @@ const handleAuth = async () => {
               }}
 
             >
-              <Typography variant="h5" fontWeight="bold" mb={2}>
+              <Typography variant="h5" fontWeight="bold" mb={2}mt={5}>
                 {tab === 'login' ? 'Welcome Back' : 'Create Account'}
               </Typography><Button
                 variant="text"
@@ -709,40 +743,15 @@ const handleAuth = async () => {
           </motion.div>
         </AnimatePresence>
       </Box>
-       
+       <div style={{marginTop:'-195px'}}><Footer/></div>
     
-      <Box
-        mt={-29}
-        mb={-7}
-        width={120}
-        height={120}
-        borderRadius="50%"
-        overflow="hidden"
-        boxShadow="0 0 10px rgba(0,0,0,0.15)"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        // mx="auto"
-        ml={"155px"}
-      >
-        <img
-          src={profileImages[currentImageIndex]}
-          alt={`Profile ${currentImageIndex + 1}`}
-          style={{
-            width: '100%',
-            height: '110%',
-            objectFit: 'cover',
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        />
-
-      </Box>
+{/*   
       <Typography
         variant="body2"
         sx={{
           fontWeight: 500,
           fontSize: '0.9rem',
-          mt: 9,
+          mt: -12,
           ml: 16,
           mb: 2,
           opacity: 0.8,
@@ -751,6 +760,19 @@ const handleAuth = async () => {
       >
         &copy; {new Date().getFullYear()} All rights reserved
       </Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 500,
+          fontSize: '0.9rem',
+          ml: 16,
+          mb: 2,
+          opacity: 0.8,
+          color: 'black'
+        }}
+      >
+         StricBuzz by Usman Shaik ヅ
+      </Typography> */}
     </>
   );
 };

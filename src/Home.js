@@ -1,7 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Typography, Box, Tooltip, Avatar, Dialog, DialogContent } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
-
+import img1 from './images/1.jpg';
+import img2 from './images/2.jpg';
+import img3 from './images/3.jpg';
+import img4 from './images/4.jpg';
+import img5 from './images/5.jpg';
+import img6 from './images/6.jpg';
+import img7 from './images/7.jpg';
+import img8 from './images/8.jpg';
+import img9 from './images/9.jpg';
+import img10 from './images/10.jpg';
+import img11 from './images/11.jpg';
 import './App.css';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
@@ -11,6 +21,7 @@ import Navbar from './components/Navbar';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { getAuth, signOut } from 'firebase/auth';
+
 const Home = () => {
 
 
@@ -24,8 +35,9 @@ const Home = () => {
   const flipBtnRef = useRef(null);
   const flipSoundRef = useRef(null);
   const [weather, setWeather] = useState(null);
-
-  const flipCoin = () => {
+ const [currentImageIndex, setCurrentImageIndex] = useState(0);
+ const profileImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+ const flipCoin = () => {
     const isHeads = Math.random() < 0.5;
     if (!coinRef.current || !flipBtnRef.current || !flipSoundRef.current) return;
 
@@ -43,7 +55,12 @@ const Home = () => {
 
     flipBtnRef.current.disabled = true;
   };
-
+ useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
+    }, 2000); // Change every 2 seconds
+    return () => clearInterval(interval);
+  }, []);
   const resetGame = () => {
     if (coinRef.current) coinRef.current.style.animation = 'none';
     setHeads(0);
@@ -59,6 +76,7 @@ const Home = () => {
     '/assets/MATCH 7.jpg',
     '/assets/MATCH 8.jpg',
   ];
+  
   const handleLogout = async () => {
     const auth = getAuth();
     await signOut(auth);
@@ -524,7 +542,39 @@ const Home = () => {
             </audio>
           </div>
         </div>
+<Box sx={{mb:-8, mt:10}}>
+<Typography fontFamily="'Pacifico', cursive" fontSize="1.6rem" color="#c74859" marginLeft={'125px'}>
+  Explore Now
+</Typography>
+  <Box
+    mt={4}
+    mb={2}
+    width={120}
+    height={120}
+    borderRadius="50%"
+    overflow="hidden"
+    boxShadow="0 0 10px rgba(0,0,0,0.15)"
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
+    ml="145px"
+  >
+    <img
+      src={profileImages[currentImageIndex]}
+      alt={`Profile ${currentImageIndex + 1}`}
+      style={{
+        width: '100%',
+        height: '110%',
+        objectFit: 'cover',
+        transition: 'opacity 0.5s ease-in-out',
+      }}
+    />
+  </Box>
 
+ 
+
+
+</Box>
         <MatchScore />
         <UpdateMatchScore onUpload={(scoreData) => console.log('Score data uploaded:', scoreData)} />
         <Footer />

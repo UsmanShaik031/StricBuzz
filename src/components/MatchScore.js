@@ -53,7 +53,7 @@ export default function MatchScore() {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" mt={6}>
+      <Box display="flex" justifyContent="center" mt={0}>
         <CircularProgress color="primary" />
       </Box>
     );
