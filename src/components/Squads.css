@@ -1,13 +1,13 @@
 /* Base styles */
 .squads-container {
-  width: 90%;
+  width: 93%;
   max-width: 1200px;
   margin: auto;
   margin-top: 8px;
   background-color: #fff;
   padding: 32px;
   border-radius: 12px;
-  margin-left: 5px;
+  margin-left: -6px;
 }
 
 .squads-title {
@@ -21,7 +21,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  margin-left: 18px;
+  margin-left: -18px;
   width: 260px;
 }
 
@@ -36,8 +36,8 @@
   flex-direction: row;
   gap: 32px;
   justify-content: space-between;
-  width: 110%;
-  margin-left: -15px;
+  width: 100%;
+  margin-left: -25px;
 }
 
 .team-column {

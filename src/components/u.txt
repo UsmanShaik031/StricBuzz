@@ -1,0 +1,27 @@
+confirm
+
+{tab === 'register' && (
+  <TextField
+    fullWidth
+    placeholder="Confirm Password"
+    type={showPassword ? 'text' : 'password'}
+    variant="outlined"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    sx={inputStyle}
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <Lock />
+        </InputAdornment>
+      ),
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={handleTogglePassword} edge="end">
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    }}
+  />
+)}

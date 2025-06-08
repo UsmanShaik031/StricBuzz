@@ -6,7 +6,7 @@ const TopHeader = () => {
     <div className="top-header">
       <div className="back-icon">
         {/* <IoArrowBack size={24} color="#fff" /> */}
-              <h1 className="main-title">Go ahead and set up your account</h1>
+              <h1 className="main-title">StricBuzz</h1>
       </div>
 
        <p  className="subtitle">Weleome to StricBuzz, Login to enjoy the Stric Premier League Experience... </p>

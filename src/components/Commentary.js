@@ -1,10 +1,9 @@
 import React from 'react';
-import LiveCommentary from '../components/LiveCommentary'; // adjust path if needed
+import LiveCommentary from '../components/LiveCommentary';
 
 const Commentary = () => {
   return (
     <div style={{ padding: '20px' }}>
-     
       <LiveCommentary />
     </div>
   );

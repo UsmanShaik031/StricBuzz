@@ -12,15 +12,13 @@ import {
   Box,
   Button as MUIButton,
 } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import MenuIcon from '@mui/icons-material/Menu';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
-
+import { getAuth, signOut } from 'firebase/auth'; // make sure this is at the top
 const Navbar = ({
+
   drawerOpen,
   setDrawerOpen,
   heads,
@@ -40,6 +38,7 @@ const Navbar = ({
 const navigate = useNavigate();
 const navItems = [
   { label: 'Home', path: '/' },
+  { label: 'Snaps', path: '/snaps' },
   { label: 'Commentary', path: '/commentary' },
   { label: 'Scoreboard', path: '/scoreboard' },
   { label: 'PointsTable', path: '/pointstable' },
@@ -50,7 +49,7 @@ const navItems = [
       <AppBar position="static" style={{ background: 'white' }}>
         <Toolbar>
           <IconButton edge="start" sx={{ color: 'black' }} onClick={() => setDrawerOpen(true)}>
-            <MenuIcon />
+            <SettingsIcon />
           </IconButton>
 
 
@@ -94,23 +93,22 @@ const navItems = [
       <Drawer anchor="left"  open={drawerOpen} onClose={() => setDrawerOpen(false)} > 
         <Box width={300} padding={2} ml={-2}>
           <Box mt={-1} mb={1} pb={1} style={{ borderBottom: '4px solid rgba(0, 0, 0, 0.1)' }}>
-            <Box display="flex" alignItems="center" gap={1} pl={1}>
-              <MenuIcon style={{ color: '#333' }} />
-              <Typography
-                variant="h6"
-                gutterBottom
-                style={{
-                  fontWeight: 'bold',
-                  textAlign: 'left',
-                  padding: '4px 0',
-                  borderRadius: 4,
-                  display: 'inline-block',
-                  marginTop: '7px',
-                }}
-              >
-                Menu
-              </Typography>
-            </Box>
+         <Box display="flex" alignItems="center" gap={1.5} pl={2} py={1}>
+  <SettingsIcon sx={{ color: '#2c3e50', fontSize: 26 }} />
+  <Typography
+    variant="h6"
+    sx={{
+      fontWeight: 700,
+      color: '#2c3e50',
+      fontFamily: "'Segoe UI', sans-serif",
+      fontSize: '1.25rem',
+      letterSpacing: 0.5,
+    }}
+  >
+    Settings
+  </Typography>
+</Box>
+
           </Box>
 
       <List component="nav" sx={{ px: 2, pt: 2 }}>
@@ -121,17 +119,9 @@ const navItems = [
   </ListItem>
    <ListItem button>
     <ListItemIcon><SettingsIcon /></ListItemIcon>
-    <ListItemText primary="Settings" />
-  </ListItem>
-  <ListItem button>
-    <ListItemIcon><DashboardIcon /></ListItemIcon>
-    <ListItemText primary="Dashboard" />
+    <ListItemText primary="Edit" />
   </ListItem>
 
-  <ListItem button>
-    <ListItemIcon><NotificationsIcon /></ListItemIcon>
-    <ListItemText primary="Notifications" />
-  </ListItem>
 
   
 </List>
@@ -201,11 +191,17 @@ const navItems = [
 
 <MUIButton
   variant="outlined"
- onClick={() => {
-  localStorage.removeItem('authenticated');
-  if (onLogout) onLogout(); // optional callback to parent
-  navigate('/'); // or to '/login' if you have a login route
-  window.location.reload(); // optional: force refresh if app doesn't handle auth state reactively
+onClick={async () => {
+  const auth = getAuth();
+  try {
+    await signOut(auth); // Firebase logout
+    localStorage.removeItem('authenticated'); // optional: if you're using it elsewhere
+    if (onLogout) onLogout(); // notify parent if needed
+    navigate('/userlogin'); // or wherever your login route is
+  } catch (error) {
+    console.error('Logout failed:', error);
+    // Optionally show a toast/snackbar for error
+  }
 }}
 
   

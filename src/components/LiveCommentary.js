@@ -74,7 +74,7 @@ const handleLogout = () => {
   return (
 <div style={{    maxWidth: '100%',
     width: '100%',
-    mt: 6,
+    mt: 7,
     p: 2,
     mb: 6,
     bgcolor: 'transparent',
@@ -99,14 +99,13 @@ const handleLogout = () => {
       sx={{
          maxWidth: '100%',
     width: '100%',
-    mx: 'auto',
-    mt: 6,
+    height:'160vh',
+    mt: 4,
     p: 2,
     mb: 6,
     bgcolor: 'transparent',
     borderRadius: 2,
     border: 'none',
-    height: '80vh',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
@@ -118,7 +117,7 @@ const handleLogout = () => {
         variant="h6"
         textAlign="center"
         mb={5}
-        mt={-3}
+        mt={-2}
         sx={{
           fontWeight: "bold",
           display: "inline-flex",
@@ -131,7 +130,7 @@ const handleLogout = () => {
         <img
           src="/assets/commentary.gif"
           alt="Live commentary gif"
-          style={{ width: 30, height: 30, objectFit: "contain" }}
+          style={{ width: 40, height: 45, objectFit: "contain" }}
         />
       </Typography>
 
@@ -162,7 +161,7 @@ const handleLogout = () => {
                 <ListItem sx={{ display: "block", px: 0 }}>
                   <Typography
                     variant="body2"
-                    sx={{ fontSize: 14, mb: 0.3, color: "#333" }}
+                    sx={{ fontSize: 14, mb:-1.3, color: "#333" }}
                   >
                     {item.text}
                   </Typography>
@@ -197,7 +196,7 @@ const handleLogout = () => {
       </Box>
 
       {/* Input box */}
-      <Box sx={{ display: "flex", gap: 1, mb:-
+      <Box sx={{ display: "flex", gap: 1,mt:1, mb:-
       2, ml:1.2 }}>
         <TextField
           fullWidth

@@ -43,7 +43,6 @@ const Chatbot = ({ onClose }) => {
 
   const chatContainerRef = useRef(null);
 
-  // Save messages and scroll to bottom when updated
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
 
@@ -64,13 +63,12 @@ const Chatbot = ({ onClose }) => {
   };
 
   const handleContainerClick = (e) => {
-    e.stopPropagation(); // Prevent overlay click from closing chatbot
+    e.stopPropagation();
   };
 
   return (
     <div className="chatbot-overlay" onClick={onClose}>
       <Box className="chatbot-container" onClick={handleContainerClick}>
-        {/* Header */}
         <Box className="chatbot-header" display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={1}>
             <SmartToyIcon fontSize="large" />
@@ -83,7 +81,6 @@ const Chatbot = ({ onClose }) => {
           </IconButton>
         </Box>
 
-        {/* Messages */}
         <Box className="chat-messages" ref={chatContainerRef}>
           {messages.map((msg, index) => (
             <Box
@@ -97,7 +94,6 @@ const Chatbot = ({ onClose }) => {
           ))}
         </Box>
 
-        {/* Input */}
         <Box
           component="form"
           onSubmit={handleSubmit}

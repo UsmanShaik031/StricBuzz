@@ -59,7 +59,7 @@ html, body {
 .container {
   /* Remove fixed positioning */
   position: relative; /* or just remove this line */
-  top: auto;
+  top:10;
   left: auto;
   transform: none;
   
@@ -141,7 +141,7 @@ button {
 }
 
 #flip-button:disabled {
-  background-color: #ccc;
+  background-color: #4c4747;
   color: #666;
   cursor: not-allowed;
 }

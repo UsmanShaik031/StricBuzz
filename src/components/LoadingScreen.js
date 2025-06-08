@@ -23,7 +23,7 @@ const LoadingScreen = ({ onFinish }) => {
   return (
     <div className={`loading-screen ${fadeOut ? 'fade-out' : ''}`}>
       <img
-        src="/assets/Spinner@1x-1.0s-200px-200px.svg"
+        src="/assets/Pulse@1x-1.0s-200px-200px.svg"
         alt="Loading..."
         className="svg-loader"
       />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Table,
@@ -28,7 +28,6 @@ import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc } from "firebase
 import { db } from "./firebase";
 
 const Bowlers = () => {
-  // State hooks for bowlers data, form inputs, editing state, dialogs, loading, and snackbar
   const [bowlers, setBowlers] = useState([]);
   const [form, setForm] = useState({
     name: "",
@@ -45,50 +44,43 @@ const Bowlers = () => {
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "info" });
 
-  // Reference to Firestore collection
- const bowlersRef = React.useMemo(() => collection(db, "matches", "matched", "Bowlers"), []);
-const fetchBowlers = useCallback(async () => {
-  setLoading(true);
-  try {
-    const snapshot = await getDocs(bowlersRef);
-    const fetchedBowlers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setBowlers(fetchedBowlers);
-  } catch (error) {
-    console.error("Error fetching bowlers:", error);
-    setSnackbar({ open: true, message: "Failed to fetch bowlers.", severity: "error" });
-  } finally {
-    setLoading(false);
-  }
-}, [bowlersRef]);
+  const bowlersRef = React.useMemo(() => collection(db, "matches", "matched", "Bowlers"), []);
+  const fetchBowlers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const snapshot = await getDocs(bowlersRef);
+      const fetchedBowlers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setBowlers(fetchedBowlers);
+    } catch (error) {
+      console.error("Error fetching bowlers:", error);
+      setSnackbar({ open: true, message: "Failed to fetch bowlers.", severity: "error" });
+    } finally {
+      setLoading(false);
+    }
+  }, [bowlersRef]);
 
-useEffect(() => {
-  fetchBowlers();
-}, [fetchBowlers]);
+  useEffect(() => {
+    fetchBowlers();
+  }, [fetchBowlers]);
 
-
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Open dialog for adding new bowler
   const openDialog = () => {
     setForm({ name: "", overs: "", maidens: "", runs: "", wickets: "", note: "" });
     setEditingIndex(null);
     setDialogOpen(true);
   };
 
-  // Close add/edit dialog
   const closeDialog = () => setDialogOpen(false);
 
-  // Check if required fields are filled
   const isFormValid = () => {
     const { name, overs, maidens, runs, wickets } = form;
-    return name.trim() && overs !== "" && maidens !== "" && runs !== "" && wickets !== "" ;
+    return name.trim() && overs !== "" && maidens !== "" && runs !== "" && wickets !== "";
   };
 
-  // Add new or update existing bowler in Firestore
   const addOrUpdateBowler = async () => {
     if (!isFormValid()) {
       setSnackbar({
@@ -110,7 +102,6 @@ useEffect(() => {
     setLoading(true);
     try {
       if (editingIndex !== null) {
-        // Update existing bowler
         const bowlerToUpdate = bowlers[editingIndex];
         const bowlerDocRef = doc(bowlersRef, bowlerToUpdate.id);
         await updateDoc(bowlerDocRef, bowlerData);
@@ -119,7 +110,6 @@ useEffect(() => {
         updatedBowlers[editingIndex] = { ...bowlerToUpdate, ...bowlerData };
         setBowlers(updatedBowlers);
       } else {
-        // Add new bowler
         const docRef = await addDoc(bowlersRef, bowlerData);
         setBowlers((prev) => [...prev, { id: docRef.id, ...bowlerData }]);
       }
@@ -134,13 +124,11 @@ useEffect(() => {
     }
   };
 
-  // Reset form to initial state
   const resetForm = () => {
     setForm({ name: "", overs: "", maidens: "", runs: "", wickets: "", note: "" });
     setEditingIndex(null);
   };
 
-  // Handle edit action: populate form with existing bowler data
   const handleEdit = (index) => {
     const bowler = bowlers[index];
     setForm({
@@ -155,13 +143,11 @@ useEffect(() => {
     setDialogOpen(true);
   };
 
-  // Confirm delete dialog open
   const confirmDelete = (index) => {
     setDeleteIndex(index);
     setDeleteDialogOpen(true);
   };
 
-  // Handle deletion of bowler
   const handleDeleteConfirmed = async () => {
     if (deleteIndex === null) return;
 
@@ -185,7 +171,6 @@ useEffect(() => {
 
   return (
     <Box sx={{ width: { xs: "100%", sm: "90%", md: 900 }, mx: "auto", mt: 2 }}>
-      {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -202,14 +187,12 @@ useEffect(() => {
         </Alert>
       </Snackbar>
 
-      {/* Loading spinner */}
       {loading && (
         <Box textAlign="center" my={2}>
           <CircularProgress />
         </Box>
       )}
 
-      {/* Bowlers Table */}
       <TableContainer component={Paper} variant="outlined">
         <Table size="small" aria-label="bowlers table">
           <TableHead>
@@ -251,12 +234,10 @@ useEffect(() => {
         </Table>
       </TableContainer>
 
-      {/* Add/Edit Bowler Dialog */}
       <Dialog open={dialogOpen} onClose={closeDialog} fullWidth maxWidth="sm">
         <DialogTitle>{editingIndex !== null ? "Edit Bowler" : "Add New Bowler"}</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            {/* Name */}
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Name"
@@ -269,7 +250,6 @@ useEffect(() => {
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
               />
             </Grid>
-            {/* Overs */}
             <Grid item xs={6} sm={3}>
               <TextField
                 label="Overs"
@@ -284,7 +264,6 @@ useEffect(() => {
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
               />
             </Grid>
-            {/* Maidens */}
             <Grid item xs={6} sm={3}>
               <TextField
                 label="Maidens"
@@ -299,7 +278,6 @@ useEffect(() => {
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
               />
             </Grid>
-            {/* Runs */}
             <Grid item xs={6} sm={3}>
               <TextField
                 label="Runs"
@@ -314,7 +292,6 @@ useEffect(() => {
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
               />
             </Grid>
-            {/* Wickets */}
             <Grid item xs={6} sm={3}>
               <TextField
                 label="Wickets"
@@ -329,11 +306,8 @@ useEffect(() => {
                 sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
               />
             </Grid>
-            {/* Economy */}
             <Grid item xs={12} sm={6}>
-           
             </Grid>
-            {/* Note */}
             <Grid item xs={12}>
               <TextField
                 label="Note (e.g. bowling)"
@@ -348,101 +322,99 @@ useEffect(() => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button  sx={{bgcolor:'#d12828', borderRadius:'10px',color:'white'}} onClick={closeDialog} variant="outlined" color="error">
+          <Button
+            sx={{ bgcolor: '#d12828', borderRadius: '10px', color: 'white' }}
+            onClick={closeDialog} variant="outlined" color="error">
             Cancel
           </Button>
-          <Button sx={{bgcolor:'black', borderRadius:'10px'}}  onClick={addOrUpdateBowler} variant="contained" color="primary" disabled={loading}>
+          <Button sx={{ bgcolor: 'black', borderRadius: '10px' }} onClick={addOrUpdateBowler} variant="contained" color="primary" disabled={loading}>
             {editingIndex !== null ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Confirm Delete Dialog */}
-  <Dialog
-  open={deleteDialogOpen}
-  onClose={() => setDeleteDialogOpen(false)}
-  PaperProps={{
-    sx: {
-      borderRadius: 3,     // Rounded corners
-      p: 1,                // Inner padding
-      minWidth: 250,       // Minimum width
-    },
-  }}
->
-  <DialogTitle
-    sx={{
-      fontWeight: 'bold',
-      fontSize: '1.35rem',
-      color: 'error.main',
-    }}
-  >
-    Confirm Delete
-  </DialogTitle>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            p: 1,
+            minWidth: 250,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: 'bold',
+            fontSize: '1.35rem',
+            color: 'error.main',
+          }}
+        >
+          Confirm Delete
+        </DialogTitle>
 
-  <DialogContent>
-    <Typography sx={{ fontSize: '1rem', mb: 1 }}>
-      Are you sure you want to delete this bowler? This action cannot be undone.
-    </Typography>
-  </DialogContent>
+        <DialogContent>
+          <Typography sx={{ fontSize: '1rem', mb: 1 }}>
+            Are you sure you want to delete this bowler? This action cannot be undone.
+          </Typography>
+        </DialogContent>
 
-  <DialogActions sx={{ px: 3, pb: 2 }}>
-    <Button
-      onClick={() => setDeleteDialogOpen(false)}
-      variant="outlined"
-      color="primary"
-      sx={{
-        borderRadius: 2,
-        textTransform: 'none',
-        px: 3,
-        fontWeight: 500,
-      }}
-    >
-      Cancel
-    </Button>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button
+            onClick={() => setDeleteDialogOpen(false)}
+            variant="outlined"
+            color="primary"
+            sx={{
+              borderRadius: 2,
+              textTransform: 'none',
+              px: 3,
+              fontWeight: 500,
+            }}
+          >
+            Cancel
+          </Button>
 
-    <Button
-      onClick={handleDeleteConfirmed}
-      color="error"
-      variant="contained"
-      disabled={loading}
-      sx={{
-        borderRadius: 2,
-        textTransform: 'none',
-        px: 3,
-        fontWeight: 600,
-        boxShadow: 2,
-      }}
-    >
-      Delete
-    </Button>
-  </DialogActions>
-</Dialog>
+          <Button
+            onClick={handleDeleteConfirmed}
+            color="error"
+            variant="contained"
+            disabled={loading}
+            sx={{
+              borderRadius: 2,
+              textTransform: 'none',
+              px: 3,
+              fontWeight: 600,
+              boxShadow: 2,
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-
-
-      {/* Add New Bowler Button */}
       <Box textAlign="center" mt={2}>
         <Button
           variant="contained"
           startIcon={<PersonAddIcon />}
           onClick={openDialog}
           sx={{
-    mt: 3,
-    width: '200px',
-    mb: 2,
-    ml: 10,
-    backgroundColor: "black",
-    color: "#fff",
-    textTransform: "none",
-    fontWeight: 600,
-    borderRadius: 2,
-    px: 3,
-    py: 1,
-    boxShadow: 3,
-    display: "flex",           // Use flex for alignment
-    alignItems: "center",      // Vertically align icon and text
-    justifyContent: "center",  // Optional: center the whole content
-  }}
+            mt: 3,
+            width: '200px',
+            mb: 2,
+            ml: 10,
+            backgroundColor: "black",
+            color: "#fff",
+            textTransform: "none",
+            fontWeight: 600,
+            borderRadius: 2,
+            px: 3,
+            py: 1,
+            boxShadow: 3,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           Add New Bowler
         </Button>

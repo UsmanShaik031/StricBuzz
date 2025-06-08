@@ -65,9 +65,9 @@ const handleLogout = () => {
 className="squads-container"
 >
   {/* Team Headers with VS */}
- <Box ml={2}>
+ <Box ml={3}>
   {/* Top Center Title */}
-  <Typography variant="h5" fontWeight="bold" textAlign="center" mb={3.5} ml={-1}>
+  <Typography variant="h5" fontWeight="bold" textAlign="center" mb={3.5} ml={1}>
     Playing XI
   </Typography>
 
@@ -78,17 +78,18 @@ className="squads-container"
       justifyContent: 'space-between',
       alignItems: 'center',
       mb: 3,
-      ml: '18px',
+      ml: '3px',
       width: '260px',
     }}
   >
     {/* Fire Team */}
-    <Box sx={{ display: 'flex', alignItems: 'center' ,gap:0.5}}>
-      <img src="/assets/fire.gif" alt="Fire" width="30" height="30" style={{  marginLeft:-4}} />
-      <Typography variant="h6" fontWeight="bold" color="error">
-        Fire
+     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <img src="/assets/storm.gif" alt="Storm" width="30" height="30" style={{ marginRight: 8 }} />
+      <Typography variant="h6" fontWeight="bold" color="primary">
+        Storm
       </Typography>
     </Box>
+    
 
     {/* Optional center area */}
     <Typography variant="h6" fontWeight="bold" color="text.secondary">
@@ -96,10 +97,10 @@ className="squads-container"
     </Typography>
 
     {/* Storm Team */}
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <img src="/assets/storm.gif" alt="Storm" width="30" height="30" style={{ marginRight: 8 }} />
-      <Typography variant="h6" fontWeight="bold" color="primary">
-        Storm
+   <Box sx={{ display: 'flex', alignItems: 'center' ,gap:0.5}}>
+      <img src="/assets/fire.gif" alt="Fire" width="30" height="30" style={{  marginLeft:-10}} />
+      <Typography variant="h6" fontWeight="bold" color="error">
+        Fire
       </Typography>
     </Box>
   </Box>
@@ -119,7 +120,7 @@ className="squads-container"
     }}
   >
     {/* Left Team */}
-    <Box sx={{ flex: 1, marginLeft:'27px' }}>
+    <Box sx={{ flex: 1, marginLeft:'23px' }}>
       {leftPlayers.map((player, index) => (
         <Box key={player.id}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 1 }}>
