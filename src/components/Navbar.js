@@ -90,10 +90,27 @@ const navItems = [
 
         </Toolbar>
       </AppBar>
+<Drawer
+  anchor="left"
+  open={drawerOpen}
+  onClose={() => setDrawerOpen(false)}
+  PaperProps={{
+    sx: {
+    height:'120vh',
+    marginTop:'-15px',
+      width: 210,
+      borderRadius: '0 20px 20px 0',
+      overflowX: 'hidden', // Prevent side scroll inside drawer
+    },
+  }}
+  ModalProps={{
+    keepMounted: true, // Optional: improves performance on mobile
+  }}
+>
 
-      <Drawer anchor="left"  open={drawerOpen} onClose={() => setDrawerOpen(false)} > 
-        <Box width={300} padding={2} ml={-2}>
-          <Box mt={-1} mb={1} pb={1} style={{ borderBottom: '4px solid rgba(0, 0, 0, 0.1)' }}>
+
+        <Box width={300} padding={2} ml={-2} borderRadius={40}>
+          <Box mt={-1} mb={1} pb={1} style={{ borderBottom: 'none' }}>
          <Box display="flex" alignItems="center" gap={1.5} pl={2} py={1}>
   <SettingsIcon sx={{ color: '#2c3e50', fontSize: 26 }} />
   <Typography

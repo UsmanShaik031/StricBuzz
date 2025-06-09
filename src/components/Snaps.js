@@ -5,7 +5,7 @@ import Footer from './Footer';
 
 const images = [
   { src: '/assets/I1.jpg', orientation: 'landscape', id: 'i1', description: 'Cool Moments', info: 'This moment captures the calm before the storm, when the energy of the game is about to burst into life. A perfect memory frozen in time.' },
-  { src: '/assets/I2.jpg', orientation: 'landscape', id: 'i2', description: 'Players Warming Up', info: 'Players engage in warm-up drills, stretching and practicing their reflexes, preparing both physically and mentally for the match ahead.' },
+  { src: '/assets/I9.jpg', orientation: 'landscape', id: 'i9',  description: 'Team Huddle', info: 'A quick huddle to reinforce team spirit and strategies, highlighting the role of unity in the pursuit of victory.' },
   { src: '/assets/I4.jpg', orientation: 'landscape', id: 'i4', description: 'Intense Gameplay', info: 'A gripping moment of the game when the stakes were high and every move counted. Spectators held their breath as strategies unfolded.' },
   { src: '/assets/I6.jpg', orientation: 'landscape', id: 'i6', description: 'Venue', info: 'An immaculate venue with perfect pitch conditions and lively crowd energy made it an ideal setting for the showdown.' },
   { src: '/assets/I22.jpg', orientation: 'landscape', id: 'i22', description: 'Stadium Cool', info: 'A panoramic shot of the packed stadium reflecting the grandeur and excitement of live cricket entertainment.' },
@@ -13,7 +13,7 @@ const images = [
   { src: '/assets/I5.jpg', orientation: 'portrait', id: 'i5', description: 'Pitch Action', info: 'A thrilling delivery captured mid-air as the bowler unleashes pace and precision aimed at unsettling the batsman.' },
   { src: '/assets/I7.jpg', orientation: 'portrait', id: 'i7', description: 'Batting Stance', info: 'The batsman steadies himself with focus, anticipating the next delivery, showcasing grit and confidence in stance.' },
   { src: '/assets/I8.jpg', orientation: 'portrait', id: 'i8', description: 'Celebration Time', info: 'A joyous outburst after a pivotal moment — whether a wicket or a boundary — capturing the raw emotion of the sport.' },
-  { src: '/assets/I9.jpg', orientation: 'portrait', id: 'i9', description: 'Team Huddle', info: 'A quick huddle to reinforce team spirit and strategies, highlighting the role of unity in the pursuit of victory.' },
+  { src: '/assets/I2.jpg', orientation: 'portrait', id: 'i2', description: 'Players Warming Up', info: 'Players engage in warm-up drills, stretching and practicing their reflexes, preparing both physically and mentally for the match ahead.'}
 ];
 
 const Snaps = () => {

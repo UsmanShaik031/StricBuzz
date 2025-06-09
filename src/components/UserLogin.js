@@ -743,7 +743,7 @@ const handleAuth = async () => {
           </motion.div>
         </AnimatePresence>
       </Box>
-       <div style={{marginTop:'-153px'}}><Footer/></div>
+       <div style={{marginTop:'-133px'}}><Footer/></div>
     
 {/*   
       <Typography

@@ -49,7 +49,7 @@ const Footer = () => {
           <Grid item xs={12} md={3} />
         </Grid>
 
-        <Divider sx={{ my: 3, borderColor: '#195a3d' }} />
+        <Divider sx={{ my: 3, borderColor: 'black' }} />
 
         <Box display="flex" justifyContent="space-between" flexWrap="wrap" alignItems="center">
           <Stack direction="row" spacing={2}>

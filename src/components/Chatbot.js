@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
 import CloseIcon from '@mui/icons-material/Close';
 import './Chatbot.css';
 
@@ -71,9 +70,9 @@ const Chatbot = ({ onClose }) => {
       <Box className="chatbot-container" onClick={handleContainerClick}>
         <Box className="chatbot-header" display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={1}>
-            <SmartToyIcon fontSize="large" />
-            <Typography variant="h5" fontWeight={600}>
-              StricBot
+            {/* <SmartToyIcon fontSize="large" /> */}
+            <Typography style={{fontSize:'30px', marginTop:'5p'}} fontWeight={700}>
+              Stric Chat
             </Typography>
           </Box>
           <IconButton onClick={onClose} className="close-button" sx={{ marginLeft: 'auto', paddingRight: 0 }}>
@@ -98,42 +97,42 @@ const Chatbot = ({ onClose }) => {
           component="form"
           onSubmit={handleSubmit}
           className="chat-input-container"
-          mb={0.3}
-          mt={2}
+          mb={1.5}
+          mt={-3}
         >
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Type your message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            autoComplete="off"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '25px',
-              },
-            }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              width: 65,
-              height: 55,
-              minWidth: 0,
-              borderRadius: '50%',
-              backgroundColor: '#45b7d1',
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              '&:hover': {
-                backgroundColor: '#2ca3be',
-              },
-            }}
-          >
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </Button>
+     <TextField
+  fullWidth
+  variant="outlined"
+  placeholder="Type your message..."
+  value={message}
+  onChange={(e) => setMessage(e.target.value)}
+  autoComplete="off"
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '20px',
+      backgroundColor: '#f1f1f1',
+      fontSize: '0.95rem',
+    },
+  }}
+/>
+<Button
+  type="submit"
+  variant="text"
+  sx={{
+    minWidth: 'auto',
+    fontSize:'26px',
+    padding: '6px',
+    color: '#3f51b5',
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: '#303f9f',
+    },
+  }}
+>
+  <FontAwesomeIcon icon={faPaperPlane} />
+</Button>
+
+
         </Box>
       </Box>
     </div>
