@@ -480,12 +480,12 @@ const handleAuth = async () => {
               elevation={3}
               sx={{
                 p: 4,
-                mt: -9,
+                mt: -36,
                 borderRadius: 5,
                 backgroundColor: 'none',
                 backdropFilter: 'blur(25px)',
                 boxShadow: 'none',
-                textAlign: 'center',
+                textAlign: 'center'
               }}
 
             >
