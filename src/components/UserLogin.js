@@ -340,7 +340,7 @@ const handleAuth = async () => {
       >
 
         {/* Auth Toggle Button */}
-        <Box sx={{ position: 'fixed', top: 35, right: 30, zIndex: 9999 }}>
+        <Box sx={{  top: 35, right: 30, zIndex: 9999 }}>
           {/* Site Title + Description on Left */}
         <Box
   sx={{
@@ -386,6 +386,7 @@ const handleAuth = async () => {
         ml: 0.5,
         opacity: 0.8,
         color: 'black',
+      mb:4
       }}
     >
       Best Street Cricket Experience Ever
@@ -401,10 +402,11 @@ const handleAuth = async () => {
     muted
     playsInline
     sx={{
-      mt:-2
+      mt:-4
 ,      width: 118,
       height: 118,
       objectFit: 'contain',
+      mb:4
     }}
   />
 </Box>
@@ -415,7 +417,7 @@ const handleAuth = async () => {
           <Box
             sx={{
               position: 'fixed',
-              top: 70,      // ~30px + height of title+desc (adjust if needed)
+              top: 80,      // ~30px + height of title+desc (adjust if needed)
               right: 30,
               zIndex: 9999,
             }}
@@ -489,7 +491,7 @@ const handleAuth = async () => {
               }}
 
             >
-              <Typography variant="h5" fontWeight="bold" mb={2}mt={5}>
+              <Typography variant="h5" fontWeight="bold" mb={2}mt={32}>
                 {tab === 'login' ? 'Welcome Back' : 'Create Account'}
               </Typography><Button
                 variant="text"
