@@ -1,13 +1,9 @@
 import React from 'react';
-import { Box, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
 const CricketRealGame = () => {
-  const openGame = () => {
-    window.open('https://www.gameflare.com/online-game/cricket-legends/', '_blank');
-  };
-
   return (
     <Box>
       <Navbar />
@@ -16,97 +12,63 @@ const CricketRealGame = () => {
           marginTop: '30px',
           minHeight: '110vh',
           background: `
-            radial-gradient(circle at top right, rgba(0, 255, 255, 0.1), rgba(0, 0, 0, 0.95)),
+            radial-gradient(circle at top right, rgba(0,255,255,0.05), rgba(0,0,0,0.95)),
             linear-gradient(to bottom right, #0f111a, #151a27, #000814)
           `,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          py: 4,
-          px: 2,
+          py: 6,
+          px: { xs: 2, md: 4 },
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          color: '#ffffff',
+          color: '#FFF',
         }}
       >
-        {/* Instructions */}
+        {/* How to Play */}
         <Box
           sx={{
-            maxWidth: 810,
-            textAlign: 'left',
+            maxWidth: 800,
+            width: '100%',
             mb: 4,
-            px: 3,
+            px: { xs: 2, md: 4 },
             py: 3,
-            borderRadius: 3,
+            background: 'rgba(255,255,255,0.05)',
+            borderRadius: 2,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
           }}
         >
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             🎮 How to Play
           </Typography>
-
-          <Typography variant="body1" gutterBottom>
-            Welcome to <strong>Cricket Legends</strong> — an immersive cricket experience packed with action!
-          </Typography>
-
-          <Box component="ul" sx={{ pl: 3, mt: 1 }}>
-            <li>
-              <Typography variant="body2">
-                <strong>Tap or Click</strong> when the ball is close to your bat to swing.
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="body2">
-                <strong>Score Big</strong> by perfectly timing your hits for 4s and 6s.
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="body2">
-                <strong>Play Anywhere</strong> – optimized for both mobile (portrait) and desktop screens.
-              </Typography>
-            </li>
-          </Box>
+          <ul style={{ paddingLeft: 20, lineHeight: 1.6 }}>
+            <li>Tap or click to swing the bat as the ball approaches.</li>
+            <li>Aim to score runs by timing your hits—watch out for obstacles!</li>
+            <li>Game is fully playable on **mobile portrait** and desktop.</li>
+          </ul>
         </Box>
 
-        {/* Game Preview Card */}
-        <Card
+        {/* Embedded Cricket Gunda */}
+        <Box
           sx={{
-            maxWidth: 345,
-            bgcolor: '#1e1e2f',
-            boxShadow: 5,
-            borderRadius: 3,
+            width: '100%',
+            maxWidth: 800,
+            height: { xs: 400, md: 600 },
+            borderRadius: 2,
+            overflow: 'hidden',
+            boxShadow: 3,
+            mb: 4,
           }}
         >
-          <CardMedia
-            component="img"
-            height="180"
-            image="https://img.gameflare.com/games/2021/09/cricket-legends/cricket-legends.jpg"
-            alt="Cricket Legends"
+          <iframe
+            src="https://zv1y2i8p.play.gamezop.com/g/BkzmafyPqJm"
+            title="Cricket Gunda"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            allowFullScreen
+            seamless="seamless"
+            allow="autoplay; fullscreen"
           />
-          <CardContent>
-            <Typography variant="h6" color="#fff" gutterBottom>
-              🏏 Cricket Legends
-            </Typography>
-            <Typography variant="body2" color="gray">
-              Play an exciting cricket match experience. Click the button below to open the game in fullscreen!
-            </Typography>
-          </CardContent>
-          <Button
-            onClick={openGame}
-            variant="contained"
-            color="warning"
-            sx={{
-              m: 2,
-              fontWeight: 'bold',
-              bgcolor: '#ff9800',
-              '&:hover': { bgcolor: '#f57c00' },
-              transition: 'all 0.3s ease',
-              boxShadow: '0 0 10px #ff9800',
-            }}
-          >
-            🎮 Play Now
-          </Button>
-        </Card>
+        </Box>
       </Box>
       <Footer />
     </Box>
