@@ -43,6 +43,7 @@ const Bowlers = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "info" });
+const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
 
   const bowlersRef = React.useMemo(() => collection(db, "matches", "matched", "Bowlers"), []);
   const fetchBowlers = useCallback(async () => {
@@ -168,6 +169,23 @@ const Bowlers = () => {
       setDeleteIndex(null);
     }
   };
+const handleClearAllConfirmed = async () => {
+  setClearAllDialogOpen(false);
+  setLoading(true);
+  try {
+    const snapshot = await getDocs(bowlersRef);
+    const deletePromises = snapshot.docs.map((docItem) => deleteDoc(doc(bowlersRef, docItem.id)));
+    await Promise.all(deletePromises);
+
+    setBowlers([]); // Clear from UI
+    setSnackbar({ open: true, message: "All bowlers deleted successfully!", severity: "info" });
+  } catch (error) {
+    console.error("Failed to clear all bowlers:", error);
+    setSnackbar({ open: true, message: "Error clearing all bowlers.", severity: "error" });
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Box sx={{ width: { xs: "100%", sm: "90%", md: 900 }, mx: "auto", mt: 2 }}>
@@ -393,7 +411,7 @@ const Bowlers = () => {
         </DialogActions>
       </Dialog>
 
-      <Box textAlign="center" mt={2}>
+      {/* <Box textAlign="center" mt={2}>
         <Button
           variant="contained"
           startIcon={<PersonAddIcon />}
@@ -418,7 +436,108 @@ const Bowlers = () => {
         >
           Add New Bowler
         </Button>
-      </Box>
+      </Box> */}
+      <Box display="flex" justifyContent="center" gap={2} mt={3} mb={2}>
+  <Button
+    variant="contained"
+    startIcon={<PersonAddIcon />}
+    onClick={openDialog}
+    sx={{
+      width: '160px',
+      backgroundColor: "black",
+      color: "#fff",
+      textTransform: "none",
+      fontWeight: 600,
+      borderRadius: 2,
+      px: 3,
+      py: 1,
+      boxShadow: 3,
+    }}
+  >
+    Add Bowler
+  </Button>
+
+  <Button
+  variant="outlined"
+  color="error"
+  onClick={() => setClearAllDialogOpen(true)}
+  sx={{
+    width: '165px',
+    borderColor: "#d12828",
+    color: "#d12828",
+    textTransform: "none",
+    fontWeight: 600,
+    borderRadius: 2,
+    px: 3,
+    py: 1,
+    boxShadow: 3,
+  }}
+>
+  Clear All
+</Button>
+
+</Box>
+<Dialog
+  open={clearAllDialogOpen}
+  onClose={() => setClearAllDialogOpen(false)}
+  PaperProps={{
+    sx: {
+      borderRadius: 3,
+      p: 1,
+      minWidth: 300,
+    },
+  }}
+>
+  <DialogTitle
+    sx={{
+      fontWeight: 'bold',
+      fontSize: '1.35rem',
+      color: 'error.main',
+    }}
+  >
+    Confirm 
+  </DialogTitle>
+
+  <DialogContent>
+    <Typography sx={{ fontSize: '1rem', mb: 1 }}>
+      Are you sure you want to delete <strong>all bowlers</strong>? This action cannot be undone.
+    </Typography>
+  </DialogContent>
+
+  <DialogActions sx={{ px: 3, pb: 2 }}>
+    <Button
+      onClick={() => setClearAllDialogOpen(false)}
+      variant="outlined"
+      color="primary"
+      sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 500,
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      onClick={handleClearAllConfirmed}
+      color="error"
+      variant="contained"
+      disabled={loading}
+      sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 600,
+        boxShadow: 2,
+      }}
+    >
+      Clear All
+    </Button>
+  </DialogActions>
+</Dialog>
+
+
     </Box>
   );
 };

@@ -60,7 +60,8 @@ const Scoreboard = () => {
   const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
   const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
   const coinRef = useRef(null);
-  
+  const [clearDialogOpen, setClearDialogOpen] = useState(false);
+
 const handleLogout = () => {
   localStorage.removeItem('authenticated'); // Remove persisted auth
   window.location.reload(); // Reload to reflect the logout state (optional)
@@ -227,6 +228,59 @@ useEffect(() => {
       setDeleteIndex(null);
     }
   };
+// const clearBatters = async () => {
+//   if (!window.confirm("Are you sure you want to clear all batters?")) return;
+
+//   setLoading(true);
+//   try {
+//     const snapshot = await getDocs(scoreboardRef);
+//     const deletePromises = snapshot.docs.map((docSnap) =>
+//       deleteDoc(doc(scoreboardRef, docSnap.id))
+//     );
+//     await Promise.all(deletePromises);
+//     setPlayers([]);
+//     setSnackbar({
+//       open: true,
+//       message: "All batters cleared successfully!",
+//       severity: "success",
+//     });
+//   } catch (error) {
+//     console.error("Error clearing batters:", error);
+//     setSnackbar({
+//       open: true,
+//       message: "Failed to clear batters.",
+//       severity: "error",
+//     });
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+const clearBatters = async () => {
+  setLoading(true);
+  try {
+    const snapshot = await getDocs(scoreboardRef);
+    const deletePromises = snapshot.docs.map((docSnap) =>
+      deleteDoc(doc(scoreboardRef, docSnap.id))
+    );
+    await Promise.all(deletePromises);
+    setPlayers([]);
+    setSnackbar({
+      open: true,
+      message: "All batters cleared successfully!",
+      severity: "success",
+    });
+  } catch (error) {
+    console.error("Error clearing batters:", error);
+    setSnackbar({
+      open: true,
+      message: "Failed to clear batters.",
+      severity: "error",
+    });
+  } finally {
+    setLoading(false);
+    setClearDialogOpen(false); // Close the dialog
+  }
+};
 
   return (
 
@@ -514,30 +568,112 @@ useEffect(() => {
 
 
       {/* Add Player Button */}
-   <Button
-  variant="contained"
-  onClick={openDialog}
-  startIcon={<PersonAddIcon />}
+<Box
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+  mt={3}
+  mb={2}
+>
+  <Button
+    variant="contained"
+    onClick={openDialog}
+    startIcon={<PersonAddIcon />}
+    sx={{
+     width: '160px',
+      backgroundColor: "black",
+      color: "#fff",
+      textTransform: "none",
+      fontWeight: 600,
+      borderRadius: 2,
+      px: 3,
+      py: 1,
+      boxShadow: 3,
+      mr: 2, // margin between buttons
+    }}
+  >
+    Add Player
+  </Button>
+
+ <Button
+  variant="outlined"
+  onClick={() => setClearDialogOpen(true)}
   sx={{
-    mt: 3,
-    width: '200px',
-    mb: 2,
-    ml: 10,
-    backgroundColor: "black",
-    color: "#fff",
+    width: '165px',
+    borderColor: "#d12828",
+    color: "#d12828",
     textTransform: "none",
     fontWeight: 600,
     borderRadius: 2,
     px: 3,
     py: 1,
     boxShadow: 3,
-    display: "flex",           // Use flex for alignment
-    alignItems: "center",      // Vertically align icon and text
-    justifyContent: "center",  // Optional: center the whole content
   }}
 >
-  Add New Player
+  Clear All
 </Button>
+
+</Box>
+
+<Dialog
+  open={clearDialogOpen}
+  onClose={() => setClearDialogOpen(false)}
+  PaperProps={{
+    sx: {
+      borderRadius: 3,
+      p: 1,
+      minWidth: 250,
+    },
+  }}
+>
+  <DialogTitle
+    sx={{
+      fontWeight: 'bold',
+      fontSize: '1.35rem',
+      color: 'error.main',
+    }}
+  >
+    Confirm 
+  </DialogTitle>
+
+  <DialogContent>
+    <Typography sx={{ fontSize: '1rem', mb: 1 }}>
+      Are you sure you want to delete <strong>all batters</strong>? This action cannot be undone.
+    </Typography>
+  </DialogContent>
+
+  <DialogActions sx={{ px: 3, pb: 2 }}>
+    <Button
+      onClick={() => setClearDialogOpen(false)}
+      variant="outlined"
+      color="primary"
+      sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 500,
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      onClick={clearBatters}
+      color="error"
+      variant="contained"
+      disabled={loading}
+      sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 600,
+        boxShadow: 2,
+      }}
+    >
+      Clear All
+    </Button>
+  </DialogActions>
+</Dialog>
 
     </Box>
     <Bowlers/>

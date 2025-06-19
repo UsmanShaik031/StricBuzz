@@ -38,6 +38,8 @@ const Navbar = ({
 const navigate = useNavigate();
 const navItems = [
   { label: 'Home', path: '/' },
+  { label: 'Poll', path: '/Poll' },
+  { label: 'Game', path: '/Game' },
   { label: 'Snaps', path: '/snaps' },
   { label: 'Commentary', path: '/commentary' },
   { label: 'Scoreboard', path: '/scoreboard' },
