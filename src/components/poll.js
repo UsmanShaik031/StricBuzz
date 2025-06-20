@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useRef,useEffect, useState, useCallback } from 'react';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import {
@@ -18,16 +18,23 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
+import { getAuth, signOut } from 'firebase/auth';
 const Poll = () => {
   const [votes, setVotes] = useState({ yes: 0, no: 0 });
   const [voted, setVoted] = useState(() => localStorage.getItem('voted'));
   const [teamVotes, setTeamVotes] = useState({ fire: 0, storm: 0 });
   const [votedTeam, setVotedTeam] = useState(() => localStorage.getItem('teamVoted'));
   const [loading, setLoading] = useState(true);
-
+  const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
+  const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const coinRef = useRef(null);
   const pollDocRef = doc(db, 'matches/matched/cricketToday', 'UndDKhRt8WUAzLCv7IzY');
   const teamDocRef = doc(db, 'matches/matched/teamPrediction', 'FireVsStorm');
-
+  const handleLogout = async () => {
+    const auth = getAuth();
+    await signOut(auth);
+  };
   // ✅ Memoize reset functions
   const handleClearPoll = useCallback(async (autoReset = false) => {
     try {
@@ -124,11 +131,20 @@ const Poll = () => {
     }
   };
 
-  if (loading) return <Typography textAlign="center">Loading poll...</Typography>;
+  if (loading) return <Typography textAlign="center"></Typography>;
 
   return (
  <div>
-  <Navbar/>
+  <Navbar
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        heads={heads}
+        tails={tails}
+        setHeads={setHeads}
+        setTails={setTails}
+        coinRef={coinRef}
+        onLogout={handleLogout}
+      />
      <Box
       sx={{
         mt:'80px',

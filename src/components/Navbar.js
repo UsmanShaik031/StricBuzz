@@ -12,10 +12,15 @@ import {
   Box,
   Button as MUIButton,
 } from '@mui/material';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
+import menuIcon from '../images/menu.png';
 import { getAuth, signOut } from 'firebase/auth'; // make sure this is at the top
 const Navbar = ({
 
@@ -39,7 +44,7 @@ const navigate = useNavigate();
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Poll', path: '/Poll' },
-  { label: 'Game', path: '/Game' },
+  { label: 'game', path: '/Game' },
   { label: 'Snaps', path: '/snaps' },
   { label: 'Commentary', path: '/commentary' },
   { label: 'Scoreboard', path: '/scoreboard' },
@@ -51,9 +56,14 @@ const navItems = [
       <AppBar position="fixed" style={{ background: 'white', zIndex: 1300, top: 0, left: 0, right: 0, }}>
 
         <Toolbar>
-          <IconButton edge="start" sx={{ color: 'black' }} onClick={() => setDrawerOpen(true)}>
-            <SettingsIcon />
-          </IconButton>
+              <IconButton edge="start" sx={{ color: 'black' }} onClick={() => setDrawerOpen(true)}>
+  <img
+    src={menuIcon}
+    alt="Menu"
+    width="24"
+    height="24"
+  />
+</IconButton>
 
 
 
@@ -131,17 +141,29 @@ const navItems = [
 
           </Box>
 
-      <List component="nav" sx={{ px: 2, pt: 2 }}>
+      <List component="nav" sx={{ px: 2, pt: 2, ml:-1.5 }}>
   {/* Main Navigation */}
-  <ListItem button>
-    <ListItemIcon><PersonIcon /></ListItemIcon>
-    <ListItemText primary="Profile" />
-  </ListItem>
-   <ListItem button>
-    <ListItemIcon><SettingsIcon /></ListItemIcon>
-    <ListItemText primary="Edit" />
-  </ListItem>
+<ListItem button onClick={() => navigate('/profilepage')}>
+  <ListItemIcon>
+    <PersonIcon sx={{ color: '#181854' }} /> {/* pink color like Instagram */}
+  </ListItemIcon>
+  <ListItemText primary="Profile" />
+</ListItem>
 
+<ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
+  <ListItemIcon><YouTubeIcon sx={{ color: '#FF0000' }} /></ListItemIcon>
+  <ListItemText primary="YouTube" />
+</ListItem>
+
+<ListItem button component="a" href="https://www.facebook.com/" target="_blank">
+  <ListItemIcon><FacebookIcon sx={{ color: '#3b5998' }} /></ListItemIcon>
+  <ListItemText primary="Facebook" />
+</ListItem>
+
+<ListItem button component="a" href="https://twitter.com/search?q=cricket" target="_blank">
+  <ListItemIcon><TwitterIcon sx={{ color: '#1DA1F2' }} /></ListItemIcon>
+  <ListItemText primary="Twitter" />
+</ListItem>
 
   
 </List>

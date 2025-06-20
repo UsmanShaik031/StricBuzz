@@ -14,7 +14,7 @@ import LoadingScreen from './components/LoadingScreen';
 import Snaps from './components/Snaps';
 import Poll from './components/poll';
 import Game from './components/Game';
-
+import ProfilePage from './components/ProfilePage';
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
@@ -28,6 +28,7 @@ const AppRoutes = () => (
     <Route path="/userlogin" element={<UserLogin />} />
 
     <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+    <Route path="/profilepage" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
     <Route path="/poll" element={<ProtectedRoute><Poll /></ProtectedRoute>} />
     <Route path="/game" element={<ProtectedRoute><Game /></ProtectedRoute>} />
     <Route path="/snaps" element={<ProtectedRoute><Snaps /></ProtectedRoute>} />

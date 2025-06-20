@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useRef,useState} from 'react';
 import { Box, Typography } from '@mui/material';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
+import { getAuth, signOut } from 'firebase/auth';
 const CricketRealGame = () => {
+        const [heads, setHeads] = useState(() => Number(localStorage.getItem('heads')) || 0);
+        const [tails, setTails] = useState(() => Number(localStorage.getItem('tails')) || 0);
+        const [drawerOpen, setDrawerOpen] = useState(false);
+        const coinRef = useRef(null);
+        const handleLogout = async () => {
+          const auth = getAuth();
+          await signOut(auth);
+        };
   return (
     <Box>
-      <Navbar />
+   <Navbar
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        heads={heads}
+        tails={tails}
+        setHeads={setHeads}
+        setTails={setTails}
+        coinRef={coinRef}
+        onLogout={handleLogout}
+      />
       <Box
         sx={{
           marginTop: '30px',
