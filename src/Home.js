@@ -21,6 +21,7 @@ import Navbar from './components/Navbar';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { getAuth, signOut } from 'firebase/auth';
+import MatchHistory from './components/MatchHistory';
 
 const Home = () => {
 
@@ -578,6 +579,7 @@ useEffect(() => {
 
 </Box>
         <MatchScore />
+        <MatchHistory/>
         <UpdateMatchScore onUpload={(scoreData) => console.log('Score data uploaded:', scoreData)} />
         <Footer />
 

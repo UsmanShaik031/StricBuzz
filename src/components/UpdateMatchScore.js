@@ -15,7 +15,7 @@ import {
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { db } from './firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 
 export default function UpdateMatchScore() {
   const [teamA, setTeamA] = useState('');
@@ -36,13 +36,13 @@ export default function UpdateMatchScore() {
     setSuccessModal(true); // Optimistically show success modal
 
     try {
-      await setDoc(doc(db, 'matches', 'matched'), {
-        TeamA: teamA,
-        TeamB: teamB,
-        ScoreA: scoreA,
-        ScoreB: scoreB,
-      });
-
+     await addDoc(collection(db, 'matches'), {
+  TeamA: teamA,
+  TeamB: teamB,
+  ScoreA: scoreA,
+  ScoreB: scoreB,
+  timestamp: Timestamp.now(),
+});
       setTeamA('');
       setTeamB('');
       setScoreA('');
@@ -66,7 +66,7 @@ export default function UpdateMatchScore() {
         <Divider sx={{ mb: 3 }} />
 
         <TextField
-          label="Team A"
+          label="Storm Captain"
           value={teamA}
           onChange={(e) => setTeamA(e.target.value)}
           sx={{ mb: 2, width: '250px' }}
@@ -84,7 +84,7 @@ export default function UpdateMatchScore() {
         />
 
         <TextField
-          label="Team B"
+          label="Fire Captain"
           value={teamB}
           onChange={(e) => setTeamB(e.target.value)}
           sx={{ mb: 2, width: '250px' }}

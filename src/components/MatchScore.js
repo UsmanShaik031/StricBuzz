@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  limit
+} from "firebase/firestore";
 import {
   Box,
   Typography,
@@ -15,21 +21,22 @@ import {
 } from "@mui/material";
 
 export default function MatchScore() {
-  const [matchData, setMatchData] = useState({
-    teamA: "",
-    teamB: "",
-    scoreA: "",
-    scoreB: ""
-  });
+  const [matchData, setMatchData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const q = query(
+      collection(db, "matches"),
+      orderBy("timestamp", "desc"),
+      limit(1) // get the latest match only
+    );
+
     const unsubscribe = onSnapshot(
-      doc(db, "matches", "matched"),
-      (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
+      q,
+      (snapshot) => {
+        if (!snapshot.empty) {
+          const data = snapshot.docs[0].data();
           setMatchData({
             teamA: data.TeamA || "Team A",
             teamB: data.TeamB || "Team B",
@@ -37,7 +44,7 @@ export default function MatchScore() {
             scoreB: data.ScoreB || "0"
           });
         } else {
-          setMatchData({ teamA: "", teamB: "", scoreA: "", scoreB: "" });
+          setMatchData(null);
         }
         setLoading(false);
       },
@@ -59,10 +66,10 @@ export default function MatchScore() {
     );
   }
 
-  if (error) {
+  if (error || !matchData) {
     return (
       <Typography variant="body1" color="error" align="center" mt={6}>
-        {error}
+        {error || "No match data available."}
       </Typography>
     );
   }
@@ -75,7 +82,7 @@ export default function MatchScore() {
         maxWidth: 400,
         mx: "auto",
         mt: 6,
-        ml:'2',
+        ml: "2",
         borderRadius: "none",
         backgroundColor: "transparent",
         boxShadow: "none",
@@ -88,13 +95,12 @@ export default function MatchScore() {
         alignItems="center"
         justifyContent="center"
         spacing={1}
-        sx={{ mb:1, 
-        marginLeft:'7%'}}
+        sx={{ mb: 1, marginLeft: "7%" }}
       >
         <Typography
           variant="h5"
           fontWeight="bold"
-          style={{ color: "#a3172e" , ml:'6'}}
+          style={{ color: "#a3172e", ml: "6" }}
         >
           ʟɪᴠᴇ sᴄᴏʀᴇ
         </Typography>
@@ -111,54 +117,46 @@ export default function MatchScore() {
         />
       </Stack>
 
+      <TableContainer component={Box}>
+        <Table size="medium" aria-label="match score table">
+          <TableBody>
+            <TableRow>
+              <TableCell align="center">
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Team
+                </Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Score
+                </Typography>
+              </TableCell>
+            </TableRow>
 
+            <TableRow>
+              <TableCell align="center">
+                <Typography variant="subtitle1">{matchData.teamA}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography variant="subtitle1" color="primary">
+                  {matchData.scoreA}
+                </Typography>
+              </TableCell>
+            </TableRow>
 
-<TableContainer component={Box}>
-  <Table size="medium" aria-label="match score table">
-    <TableBody>
-      <TableRow sx={{marginLeft:'-9px'}}>
-        <TableCell align="center">
-          <Typography variant="subtitle1" fontWeight="bold" sx={{marginLeft:'3px'}}>
-            Team
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography variant="subtitle1" fontWeight="bold">
-            Score
-          </Typography>
-        </TableCell>
-      </TableRow>
-
-      <TableRow>
-        <TableCell align="center" sx={{marginLeft:'-40px'}}>
-          <Typography sx={{marginLeft:'-10px'}} variant="subtitle1">
-            {matchData.teamA}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography variant="subtitle1" color="primary">
-            {matchData.scoreA}
-          </Typography>
-        </TableCell>
-      </TableRow>
-
-      <TableRow>
-        <TableCell align="center">
-          <Typography sx={{marginLeft:'-10px'}} variant="subtitle1">
-            {matchData.teamB}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography variant="subtitle1" color="primary">
-            {matchData.scoreB}
-          </Typography>
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
-</TableContainer>
-
-
+            <TableRow>
+              <TableCell align="center">
+                <Typography variant="subtitle1">{matchData.teamB}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography variant="subtitle1" color="primary">
+                  {matchData.scoreB}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 }

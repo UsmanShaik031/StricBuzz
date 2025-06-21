@@ -149,6 +149,12 @@ const navItems = [
   </ListItemIcon>
   <ListItemText primary="Profile" />
 </ListItem>
+<ListItem button onClick={() => navigate('/reelspage')}>
+  <ListItemIcon>
+    <PersonIcon sx={{ color: '#b76bed' }} /> {/* pink color like Instagram */}
+  </ListItemIcon>
+  <ListItemText primary="Reels" />
+</ListItem>
 
 <ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
   <ListItemIcon><YouTubeIcon sx={{ color: '#FF0000' }} /></ListItemIcon>
