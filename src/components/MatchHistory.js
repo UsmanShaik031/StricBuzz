@@ -13,11 +13,16 @@ import {
 } from "@mui/material";
 import { db } from "./firebase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 export default function MatchHistory() {
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
+const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+const [matchToDelete, setMatchToDelete] = useState(null);
 
     useEffect(() => {
         const q = query(collection(db, "matches"), orderBy("timestamp", "desc"));
@@ -140,6 +145,7 @@ export default function MatchHistory() {
     width: '250px',
     border: '2px solid black', // ✅ Apply visible border
     // You can also adjust to `1px` or a custom thickness
+ 
   }}
 >
 
@@ -147,8 +153,9 @@ export default function MatchHistory() {
                                             <Typography
                                                 variant="body2"
                                                 fontWeight="bold"
-                                                color="text.secondary"
+                                                color="black"
                                                 mb={1}
+                                                fontSize={20}
                                             >
                                                 Match {matchNumber}
                                             </Typography>
@@ -160,9 +167,10 @@ export default function MatchHistory() {
                                                 alignItems="center"
                                                 mt={2}
                                                 mb={2}
+                                                ml={1}
                                             >
                                                 {/* Team A */}
-                                                <Box textAlign="center">
+                                                <Box textAlign="center" sx={{ml:-2}}>
                                                     {/* Row: GIF + Team Name */}
                                                     <Box display="flex" justifyContent="center" alignItems="center" mb={0.5}>
                                                         <Box
@@ -175,27 +183,29 @@ export default function MatchHistory() {
                                                     </Box>
 
                                                     {/* Score below */}
-                                                    <Typography fontSize={14} sx={{ color: "#666" }}>
+                                                    <Typography fontSize={17} sx={{ color: "#666", ml:3, mt:1 }}>
                                                         {match.ScoreA}
                                                     </Typography>
                                                 </Box>
 
                                                 {/* VS */}
-                                                <Box
-                                                    sx={{
-                                                        width: 30,
-                                                        height: 30,
-                                                        borderRadius: "50%",
-                                                        background: "#1c1c1c",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                        color: "#fff",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                >
-                                                    VS
-                                                </Box>
+                                             <Box
+  sx={{
+    width: 30,
+    height: 30,
+    borderRadius: "50%",
+    background: "#1c1c1c",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+    ml:3,mr:1,
+    fontSize: '12px !important'  // Forcefully override
+  }}
+>
+  VS
+</Box>
+
 
                                                 {/* Team B */}
                                                 <Box textAlign="center">
@@ -205,13 +215,13 @@ export default function MatchHistory() {
                                                             component="img"
                                                             src="/assets/fire.gif" // replace with actual gif path
                                                             alt="Team Icon"
-                                                            sx={{ width: 24, height: 24, mr: 1 }}
+                                                             sx={{ width: 24, height: 24, mr: -0.050, mt:-0.5 }}
                                                         />
                                                         <Typography fontWeight="bold">{match.TeamB}</Typography>
                                                     </Box>
 
                                                     {/* Score below */}
-                                                    <Typography fontSize={14} sx={{ color: "#666" }}>
+                                                    <Typography fontSize={14} sx={{ color: "#666"  ,ml:3, mt:1.2 }}>
                                                         {match.ScoreB}
                                                     </Typography>
                                                 </Box>
@@ -219,7 +229,7 @@ export default function MatchHistory() {
                                             </Box>
 
                                             {/* Status */}
-                                            <Box display="flex" flexDirection="column" alignItems="center" mt={1}>
+                                            <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
                                                 <Box
                                                     py={0.5}
                                                     px={2}
@@ -229,14 +239,14 @@ export default function MatchHistory() {
                                                         color: "#fff",
                                                         borderRadius: "20px",
                                                         fontSize: "12px",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "bold",mb:1,mt:1
                                                     }}
                                                 >
                                                     Completed
                                                 </Box>
                                                 <Typography
                                                     variant="caption"
-                                                    sx={{ mt: 0.5, color: "#888", fontSize: "12px" }}
+                                                    sx={{ mt: 1, color: "black", fontSize: "15px" }}
                                                 >
                                                     {match.timestamp?.toDate().toLocaleString("en-GB", {
                                                         day: "2-digit",
@@ -249,6 +259,72 @@ export default function MatchHistory() {
 
                                                 </Typography>
                                             </Box>
+<Box display="flex" justifyContent="center">
+  <IconButton
+    aria-label="delete"
+  onClick={() => {
+  setMatchToDelete(match.id);
+  setConfirmDeleteOpen(true);
+}}
+
+    sx={{
+      color: 'black',
+      
+      borderRadius: '12px',
+      p: 1,
+      mt:1,mb:-1
+      
+    }}
+  >
+    <DeleteIcon />
+  </IconButton>
+</Box>
+
+<Dialog
+  open={confirmDeleteOpen}
+  onClose={() => setConfirmDeleteOpen(false)} PaperProps={{
+    sx: {
+      borderRadius: '20px', // ✅ Rounded corners
+      padding: 2,            // optional: add some inner spacing
+      width:'260px'
+    },}}
+>
+  <DialogContent>
+    <Typography>Are you sure you want to delete this match?</Typography>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setConfirmDeleteOpen(false)}  sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 500,
+        fontSize:16
+      }}>
+      Cancel
+    </Button>
+    <Button
+      onClick={async () => {
+        try {
+          await deleteDoc(doc(db, "matches", matchToDelete));
+          setConfirmDeleteOpen(false);
+        } catch (error) {
+          console.error("Error deleting match:", error);
+        }
+      }}
+      color="error"
+      variant="contained"
+        sx={{
+        borderRadius: 2,
+        textTransform: 'none',
+        px: 3,
+        fontWeight: 600,
+        boxShadow: 2,
+      }}
+    >
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
 
                                         </Paper>
                                     </Grid>
