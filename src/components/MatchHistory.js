@@ -125,7 +125,7 @@ const [matchToDelete, setMatchToDelete] = useState(null);
                     ) : error ? (
                         <Typography color="error">{error}</Typography>
                     ) : matches.length === 0 ? (
-                        <Typography>No match history available.</Typography>
+                        <Typography sx={{mt:'20px'}}>No match history available.</Typography>
                     ) : (
                         <Grid container spacing={3} justifyContent="center">
                             {matches.map((match, index) => {
@@ -142,10 +142,10 @@ const [matchToDelete, setMatchToDelete] = useState(null);
     padding: 3,
     backgroundColor: "#ffffff",
     textAlign: "center",
-    width: '250px',
+    width: '270px',
     border: '2px solid black', // ✅ Apply visible border
     // You can also adjust to `1px` or a custom thickness
- 
+ ml:-1.5
   }}
 >
 
@@ -189,26 +189,29 @@ const [matchToDelete, setMatchToDelete] = useState(null);
                                                 </Box>
 
                                                 {/* VS */}
-                                             <Box
+                                  <Box
   sx={{
-    width: 30,
+    width: 80, // ✅ Increased width
     height: 30,
-    borderRadius: "50%",
-    background: "#1c1c1c",
+    borderRadius: "80px", // ✅ Rounded capsule shape
+    backgroundColor: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#fff",
-    ml:3,mr:1,
-    fontSize: '12px !important'  // Forcefully override
+    color: "black",
+    ml: 1,
+    mr: -3 ,
+    fontSize: 14,
+    fontWeight:600  
   }}
 >
   VS
 </Box>
 
 
+
                                                 {/* Team B */}
-                                                <Box textAlign="center">
+                                                <Box textAlign="center"  ml={2} mr={-2}>
                                                     {/* Row: GIF + Team Name */}
                                                     <Box display="flex" justifyContent="center" alignItems="center" mb={0.5}>
                                                         <Box

@@ -68,9 +68,25 @@ export default function MatchScore() {
 
   if (error || !matchData) {
     return (
-      <Typography variant="body1" color="error" align="center" mt={6}>
-        {error || "No match data available."}
-      </Typography>
+    <Paper
+  elevation={3}
+  sx={{
+    padding: 4,
+    marginTop: 16,
+    marginBottom: 10,
+    textAlign: "center",
+    backgroundColor: "#fff5f5", // Light red background for error feel
+    border: "1px solid #f44336", // Optional red border
+    maxWidth: 300,
+    mx: "auto", // center horizontally
+    borderRadius: 2,
+  }}
+>
+  <Typography variant="body1" color="error">
+    {error || "No match data available."}
+  </Typography>
+</Paper>
+
     );
   }
 
@@ -82,7 +98,7 @@ export default function MatchScore() {
         maxWidth: 400,
         mx: "auto",
         mt: 6,
-        ml: "2",
+        ml:-1,
         borderRadius: "none",
         backgroundColor: "transparent",
         boxShadow: "none",
