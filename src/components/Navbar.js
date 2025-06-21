@@ -23,7 +23,6 @@ import menuIcon from '../images/menu.png';
 import { getAuth, signOut } from 'firebase/auth'; // make sure this is at the top
 import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
 import GamesIcon from '@mui/icons-material/Games';
-import MovieFilterIcon from '@mui/icons-material/MovieFilter'; // for Shorts
 const Navbar = ({
 
   drawerOpen,
