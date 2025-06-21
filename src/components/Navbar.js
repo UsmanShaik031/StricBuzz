@@ -172,7 +172,7 @@ const navItems = [
     />
   </ListItem>
 
-  <ListItem button onClick={() => navigate('/reelspage')}>
+  {/* <ListItem button onClick={() => navigate('/reelspage')}>
     <ListItemIcon sx={{ minWidth: 40 }}>
       <MovieFilterIcon sx={{ color: '#e91e63' }} />
     </ListItemIcon>
@@ -180,7 +180,7 @@ const navItems = [
       primary="Shorts"
       primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
     />
-  </ListItem>
+  </ListItem> */}
 
   <ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
     <ListItemIcon sx={{ minWidth: 40 }}>
