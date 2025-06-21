@@ -263,20 +263,22 @@ export default function MatchHistory() {
     variant="outlined"
     sx={{
      
-      color: '#000',
-      backgroundColor: 'black',
-        borderColor: 'white',
+      color: 'black',
      
+      backgroundColor: '#fff',
+        borderColor: '#000',
        borderRadius: '14px',
       textTransform: 'none',
       fontWeight: 600,
       px: 3,
       py: 1,
       '&:hover': {
-         backgroundColor: '#fff',
-        borderColor: '#000',
+       
       borderRadius: '14px',
-      color:'black'
+     
+      color: 'white',
+      backgroundColor: 'black',
+        borderColor: 'white',
       },
       mr:-22,mb:-1
     }}

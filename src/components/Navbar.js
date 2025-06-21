@@ -15,13 +15,15 @@ import {
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
-
-import PersonIcon from '@mui/icons-material/Person';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 import menuIcon from '../images/menu.png';
 import { getAuth, signOut } from 'firebase/auth'; // make sure this is at the top
+import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
+import GamesIcon from '@mui/icons-material/Games';
+import MovieFilterIcon from '@mui/icons-material/MovieFilter'; // for Shorts
 const Navbar = ({
 
   drawerOpen,
@@ -44,8 +46,6 @@ const navigate = useNavigate();
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Poll', path: '/Poll' },
-  { label: 'game', path: '/Game' },
-  { label: 'Snaps', path: '/snaps' },
   { label: 'Commentary', path: '/commentary' },
   { label: 'Scoreboard', path: '/scoreboard' },
   { label: 'PointsTable', path: '/pointstable' },
@@ -141,51 +141,91 @@ const navItems = [
 
           </Box>
 
-      <List component="nav" sx={{ px: 2, pt: 2, ml:-1.5 }}>
-  {/* Main Navigation */}
-<ListItem button onClick={() => navigate('/profilepage')}>
-  <ListItemIcon>
-    <PersonIcon sx={{ color: '#181854' }} /> {/* pink color like Instagram */}
-  </ListItemIcon>
-  <ListItemText primary="Profile" />
-</ListItem>
-<ListItem button onClick={() => navigate('/reelspage')}>
-  <ListItemIcon>
-    <PersonIcon sx={{ color: '#b76bed' }} /> {/* pink color like Instagram */}
-  </ListItemIcon>
-  <ListItemText primary="Reels" />
-</ListItem>
+<List component="nav" sx={{ px: 2, pt: 1, ml: -1.5 }}>
+  <ListItem button onClick={() => navigate('/profilepage')}>
+    <ListItemIcon sx={{ minWidth: 40 }}> {/* slightly less than default 56 */}
+      <ManageAccountsIcon sx={{ color: '#3f51b5' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Profile"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
 
-<ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
-  <ListItemIcon><YouTubeIcon sx={{ color: '#FF0000' }} /></ListItemIcon>
-  <ListItemText primary="YouTube" />
-</ListItem>
+  <ListItem button onClick={() => navigate('/snaps')}>
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <PhotoCameraFrontIcon sx={{ color: '#ff5722' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Snaps"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
 
-<ListItem button component="a" href="https://www.facebook.com/" target="_blank">
-  <ListItemIcon><FacebookIcon sx={{ color: '#3b5998' }} /></ListItemIcon>
-  <ListItemText primary="Facebook" />
-</ListItem>
+  <ListItem button onClick={() => navigate('/game')}>
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <GamesIcon sx={{ color: '#1e88e5' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Game"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
 
-<ListItem button component="a" href="https://twitter.com/search?q=cricket" target="_blank">
-  <ListItemIcon><TwitterIcon sx={{ color: '#1DA1F2' }} /></ListItemIcon>
-  <ListItemText primary="Twitter" />
-</ListItem>
+  <ListItem button onClick={() => navigate('/reelspage')}>
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <MovieFilterIcon sx={{ color: '#e91e63' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Shorts"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
 
-  
+  <ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <YouTubeIcon sx={{ color: '#FF0000' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="YouTube"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
+
+  <ListItem button component="a" href="https://www.facebook.com/" target="_blank">
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <FacebookIcon sx={{ color: '#3b5998' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Facebook"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
+
+  <ListItem button component="a" href="https://twitter.com/search?q=cricket" target="_blank">
+    <ListItemIcon sx={{ minWidth: 40 }}>
+      <TwitterIcon sx={{ color: '#1DA1F2' }} />
+    </ListItemIcon>
+    <ListItemText
+      primary="Twitter"
+      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
+    />
+  </ListItem>
 </List>
 
+
 {/* Divider between nav and settings */}
-<Box sx={{ borderTop: '1px solid #ccc', mx: 2, my: 2 }} />
+<Box sx={{ borderTop: '1px solid #ccc', mx: 2, my: 2, mt:1 }} />
 
 {/* Profile & Settings */}
-<List sx={{ px: 2 }}>
+<List sx={{ px: 2, marginTop:-2 }}>
   
 
- 
+
 
   {/* Game Stats */}
   <ListItem>
-    <ListItemText
+    <ListItemText 
       primary={`Total Flips: ${heads + tails}`}
       primaryTypographyProps={{ fontWeight: 'bold', fontSize: '0.9rem' }}
     />
@@ -207,16 +247,16 @@ const navItems = [
   <Box sx={{ flexGrow: 1 }} />
 
   {/* Action Buttons */}
-<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
+<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
 <MUIButton
   variant="outlined"
   onClick={resetGame}
    sx={{
     fontWeight: 600,
-    height:'45px',
-    width:'105px',
+   height:'40px',
+    width:'100px',
     textTransform: 'none',
-    fontSize: '0.85rem', // smaller text
+    fontSize: '0.79rem', // smaller text
     borderRadius: '14px', // slightly less rounded
     py: 1,                // less vertical padding
     px: 1.5,              // less horizontal padding
