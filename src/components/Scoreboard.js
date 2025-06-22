@@ -340,6 +340,8 @@ const clearBatters = async () => {
               <TableCell align="center">
                 <b>6s</b>
               </TableCell>
+                <TableCell align="center"><b>SR</b></TableCell>  {/* ➕ Strike Rate */}
+  <TableCell align="center"><b>Avg</b></TableCell> 
               <TableCell align="center">
                 <b>Actions</b>
               </TableCell>
@@ -347,166 +349,204 @@ const clearBatters = async () => {
           </TableHead>
           <TableBody>
             {players.map((player, index) => (
-              <TableRow key={player.id || index}>
-                <TableCell>
-                  <Typography
-                    variant="body2"
-                    fontWeight={player.note === "not out" ? "bold" : 400}
-                  >
-                    {player.name}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {player.note}
-                  </Typography>
-                </TableCell>
-                <TableCell align="center">{player.runs}</TableCell>
-                <TableCell align="center">{player.balls}</TableCell>
-                <TableCell align="center">{player.fours}</TableCell>
-                <TableCell align="center">{player.sixes}</TableCell>
-                <TableCell align="center">
-                  <IconButton size="small" onClick={() => handleEdit(index)}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => confirmDelete(index)}
-                    color="error"
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
+            <TableRow key={player.id || index}>
+  <TableCell>
+    <Typography
+      variant="body2"
+      fontWeight={player.note === "not out" ? "bold" : 400}
+    >
+      {player.name}
+    </Typography>
+    <Typography variant="caption" color="text.secondary">
+      {player.note}
+    </Typography>
+  </TableCell>
+
+  <TableCell align="center">{player.runs}</TableCell>
+  <TableCell align="center">{player.balls}</TableCell>
+  <TableCell align="center">{player.fours}</TableCell>
+  <TableCell align="center">{player.sixes}</TableCell>
+
+  {/* ➕ Strike Rate */}
+  <TableCell align="center">
+    {player.balls > 0
+      ? ((player.runs / player.balls) * 100).toFixed(2)
+      : '0.00'}
+  </TableCell>
+
+  {/* ➕ Average */}
+  <TableCell align="center">
+    {player.note?.toLowerCase() === "not out"
+      ? '-'
+      : (player.balls > 0 ? (player.runs / 1).toFixed(2) : '0.00')}
+  </TableCell>
+
+  <TableCell align="center">
+    <IconButton size="small" onClick={() => handleEdit(index)}>
+      <EditIcon fontSize="small" />
+    </IconButton>
+    <IconButton
+      size="small"
+      onClick={() => confirmDelete(index)}
+      color="error"
+    >
+      <DeleteIcon fontSize="small" />
+    </IconButton>
+  </TableCell>
+</TableRow>
+
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
       {/* Add / Edit Player Dialog */}
-      <Dialog open={dialogOpen} onClose={closeDialog} fullWidth maxWidth="sm">
-        <DialogTitle>
-          {editingIndex !== null ? "Edit Player" : "Add New Player"}
-        </DialogTitle>
-        <DialogContent>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
-  <Grid item xs={12} sm={6}>
-    <TextField
-      label="Name"
-      name="name"
-      value={form.name}
-      onChange={handleChange}
-      fullWidth
-      required
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-  <Grid item xs={6} sm={3}>
-    <TextField
-      label="Runs"
-      name="runs"
-      value={form.runs}
-      onChange={handleChange}
-      type="number"
-      fullWidth
-      required
-      inputProps={{ min: 0 }}
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-  <Grid item xs={6} sm={3}>
-    <TextField
-      label="Balls"
-      name="balls"
-      value={form.balls}
-      onChange={handleChange}
-      type="number"
-      fullWidth
-      required
-      inputProps={{ min: 0 }}
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-  <Grid item xs={6} sm={3}>
-    <TextField
-      label="4s"
-      name="fours"
-      value={form.fours}
-      onChange={handleChange}
-      type="number"
-      fullWidth
-      required
-      inputProps={{ min: 0 }}
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-  <Grid item xs={6} sm={3}>
-    <TextField
-      label="6s"
-      name="sixes"
-      value={form.sixes}
-      onChange={handleChange}
-      type="number"
-      fullWidth
-      required
-      inputProps={{ min: 0 }}
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-  <Grid item xs={12}>
-    <TextField
-      label="Note"
-      name="note"
-      value={form.note}
-      onChange={handleChange}
-      fullWidth
-      variant="outlined"
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 2,
-        },
-      }}
-    />
-  </Grid>
-</Grid>
+     <Dialog open={dialogOpen} onClose={closeDialog} fullWidth maxWidth="sm">
+  <DialogTitle>
+    {editingIndex !== null ? "Edit Player" : "Add New Player"}
+  </DialogTitle>
 
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
-          <Button
-            onClick={closeDialog}
-            variant="outlined"
-            sx={{bgcolor:'#d12828', borderRadius:'10px',color:'white'}}
-          >
-            Cancel
-          </Button>
-          <Button sx={{bgcolor:'black', borderRadius:'10px'}} onClick={addOrUpdatePlayer} variant="contained" disabled={loading}>
-            {editingIndex !== null ? "Update" : "Add"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+  <DialogContent>
+    <Grid container spacing={2} sx={{ mt: 1 }}>
+      <Grid item xs={12} sm={6}>
+        <TextField
+          label="Name"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          fullWidth
+          required
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="Runs"
+          name="runs"
+          value={form.runs}
+          onChange={handleChange}
+          type="number"
+          fullWidth
+          required
+          inputProps={{ min: 0 }}
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="Balls"
+          name="balls"
+          value={form.balls}
+          onChange={handleChange}
+          type="number"
+          fullWidth
+          required
+          inputProps={{ min: 0 }}
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="4s"
+          name="fours"
+          value={form.fours}
+          onChange={handleChange}
+          type="number"
+          fullWidth
+          required
+          inputProps={{ min: 0 }}
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="6s"
+          name="sixes"
+          value={form.sixes}
+          onChange={handleChange}
+          type="number"
+          fullWidth
+          required
+          inputProps={{ min: 0 }}
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <TextField
+          label="Note"
+          name="note"
+          value={form.note}
+          onChange={handleChange}
+          fullWidth
+          placeholder='e.g., "not out" or "bowled"'
+          variant="outlined"
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      {/* ➕ Auto-calculated SR */}
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="SR"
+          value={
+            form.balls && Number(form.balls) > 0
+              ? ((Number(form.runs) / Number(form.balls)) * 100).toFixed(2)
+              : "0.00"
+          }
+          fullWidth
+          variant="outlined"
+          InputProps={{ readOnly: true }}
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+
+      {/* ➕ Auto-calculated Average */}
+      <Grid item xs={6} sm={3}>
+        <TextField
+          label="Avg"
+          value={
+            form.note?.toLowerCase() === "not out"
+              ? "-"
+              : Number(form.runs || 0).toFixed(2)
+          }
+          fullWidth
+          variant="outlined"
+          InputProps={{ readOnly: true }}
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+        />
+      </Grid>
+    </Grid>
+  </DialogContent>
+
+  <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
+    <Button
+      onClick={closeDialog}
+      variant="outlined"
+      sx={{ bgcolor: '#d12828', borderRadius: '10px', color: 'white' }}
+    >
+      Cancel
+    </Button>
+    <Button
+      sx={{ bgcolor: 'black', borderRadius: '10px' }}
+      onClick={addOrUpdatePlayer}
+      variant="contained"
+      disabled={loading}
+    >
+      {editingIndex !== null ? "Update" : "Add"}
+    </Button>
+  </DialogActions>
+</Dialog>
+
 
       {/* Delete Confirmation Dialog */}
      <Dialog

@@ -97,7 +97,7 @@ export default function MatchScore() {
         p: 6,
         maxWidth: 400,
         mx: "auto",
-        mt: 6,
+        mt: 10,
         ml:-1,
         borderRadius: "none",
         backgroundColor: "transparent",
@@ -116,7 +116,7 @@ export default function MatchScore() {
         <Typography
           variant="h5"
           fontWeight="bold"
-          style={{ color: "#a3172e", ml: "6" }}
+          style={{ color: "#a3172e", ml: "6" , fontSize:'29px'}}
         >
           ʟɪᴠᴇ sᴄᴏʀᴇ
         </Typography>

@@ -140,7 +140,7 @@ const navItems = [
 
           </Box>
 
-<List component="nav" sx={{ px: 2, pt: 1, ml: -1.5 }}>
+<List component="nav" sx={{ px: 2, pt: 1, ml: -0.5,mt:2  }}>
   <ListItem button onClick={() => navigate('/profilepage')}>
     <ListItemIcon sx={{ minWidth: 40 }}> {/* slightly less than default 56 */}
       <ManageAccountsIcon sx={{ color: '#3f51b5' }} />
@@ -222,25 +222,26 @@ const navItems = [
 
 
 
-  {/* Game Stats */}
-  <ListItem>
-    <ListItemText 
-      primary={`Total Flips: ${heads + tails}`}
-      primaryTypographyProps={{ fontWeight: 'bold', fontSize: '0.9rem' }}
-    />
-  </ListItem>
-  <ListItem>
-    <ListItemText
-      primary={`Heads: ${heads}`}
-      primaryTypographyProps={{ fontSize: '0.85rem' }}
-    />
-  </ListItem>
-  <ListItem>
-    <ListItemText
-      primary={`Tails: ${tails}`}
-      primaryTypographyProps={{ fontSize: '0.85rem' }}
-    />
-  </ListItem>
+ <List sx={{ mb: 2 }}>
+    <ListItem>
+      <ListItemText 
+        primary={`Total Flips: ${heads + tails}`}
+        primaryTypographyProps={{ fontWeight: 'bold', fontSize: '0.9rem' }}
+      />
+    </ListItem>
+    <ListItem>
+      <ListItemText
+        primary={`Heads: ${heads}`}
+        primaryTypographyProps={{ fontSize: '0.85rem' }}
+      />
+    </ListItem>
+    <ListItem>
+      <ListItemText
+        primary={`Tails: ${tails}`}
+        primaryTypographyProps={{ fontSize: '0.85rem' }}
+      />
+    </ListItem>
+  </List>
 
   {/* Spacer */}
   <Box sx={{ flexGrow: 1 }} />

@@ -50,32 +50,60 @@ const [matchToDelete, setMatchToDelete] = useState(null);
 
     return (
         <>
-            <Box display="flex" justifyContent="center" mt={-2} mb={6}>
-  <Button
-    variant="outlined"
-    onClick={() => setOpen(true)}
+<Box display="flex" justifyContent="center" mt={-2} mb={9}>
+  <Box
     sx={{
-      width: '400px',
-    
-      color: 'black',
-      borderColor: 'black   ',
-      textTransform: 'none',
-      fontWeight: 'bold',
-      fontSize: '16px',
-      borderRadius: '12px',
-      px: 4,
-      py: 1.5,
-      boxShadow: 3,
-      '&:hover': {
-        backgroundColor: '#1a1a1a',
-        borderColor: '#fff',
-        color:'white'
+      position: 'relative',
+      '@keyframes shine': {
+        '0%': { left: '-75%' },
+        '100%': { left: '125%' },
       },
     }}
   >
-    Previous Match Scores
-  </Button>
+    <Button
+      variant="outlined"
+      onClick={() => setOpen(true)}
+      sx={{
+        width: '400px',
+        color: 'white',
+        borderColor: 'black',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        borderRadius: '12px',
+        px: 4,
+        py: 1.5,
+        boxShadow: 3,
+        background: 'black',
+        overflow: 'hidden',
+        position: 'relative',
+
+        '&:hover': {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#fff',
+          color: 'white',
+        },
+
+        // ✨ Shining animation using a pseudo-element
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: '-75%',
+          width: '50%',
+          height: '100%',
+          background:
+            'linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent)',
+          transform: 'skewX(-25deg)',
+          animation: 'shine 2.5s infinite',
+        },
+      }}
+    >
+      Previous Match Scores
+    </Button>
+  </Box>
 </Box>
+
 
 
             <Dialog

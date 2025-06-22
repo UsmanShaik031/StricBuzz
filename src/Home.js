@@ -22,7 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { getAuth, signOut } from 'firebase/auth';
 import MatchHistory from './components/MatchHistory';
-
+import CoinToss from './components/CoinToss';
 const Home = () => {
 
 
@@ -33,29 +33,11 @@ const Home = () => {
   // const [weather, setWeather] = useState(null);
   const [open, setOpen] = useState(false);
   const coinRef = useRef(null);
-  const flipBtnRef = useRef(null);
-  const flipSoundRef = useRef(null);
+   const [isDarkMode, setIsDarkMode] = useState(false);
   const [weather, setWeather] = useState(null);
  const [currentImageIndex, setCurrentImageIndex] = useState(0);
  const profileImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
- const flipCoin = () => {
-    const isHeads = Math.random() < 0.5;
-    if (!coinRef.current || !flipBtnRef.current || !flipSoundRef.current) return;
 
-    coinRef.current.style.animation = 'none';
-    flipSoundRef.current.currentTime = 0;
-    flipSoundRef.current.play();
-
-    setTimeout(() => {
-      coinRef.current.style.animation = isHeads ? 'spin-heads 3s forwards' : 'spin-tails 3s forwards';
-      setTimeout(() => {
-        isHeads ? setHeads(h => h + 1) : setTails(t => t + 1);
-        flipBtnRef.current.disabled = false;
-      }, 3000);
-    }, 100);
-
-    flipBtnRef.current.disabled = true;
-  };
 useEffect(() => {
   const interval = setInterval(() => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
@@ -64,11 +46,7 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, [profileImages.length]);
 
-  const resetGame = () => {
-    if (coinRef.current) coinRef.current.style.animation = 'none';
-    setHeads(0);
-    setTails(0);
-  };
+
   const images = [
     '/assets/MATCH 1.png',
     '/assets/MATCH 2.jpg',
@@ -116,7 +94,9 @@ useEffect(() => {
       })
       .catch((err) => console.error("Weather fetch error:", err));
   }, []);
-
+ const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
 
 
   return (
@@ -177,7 +157,7 @@ useEffect(() => {
             textAlign: 'center',
             fontWeight: 700,
             fontSize: '24px',
-            mt: 3,
+            mt: 5,
             mb: 3,
             ml: -5.5,
             color: '#2c3e50',
@@ -190,82 +170,120 @@ useEffect(() => {
 
         <Tooltip >
           <box>
-            <Box
-              sx={{
-                border: '1px solid #e0e0e0',
-                borderRadius: 3,
-                p: 2,
-                ml: 1.5,
-                maxWidth: 280,
-                height: 160,
-                fontFamily: "'Segoe UI', Roboto, sans-serif",
-                backgroundColor: '#ffffff',
-                position: 'relative',
-                boxShadow: '0 4px 9px rgba(21, 19, 19, 0.05)',
-                transition: 'all 0.3s ease',
-                cursor: 'pointer',
-                '&:hover': {
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                },
-              }}
-            >
-              {/* Team 1 */}
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Avatar
-                  src="/assets/fire.gif"
-                  alt="Fire"
-                  sx={{ width: 22, height: 16, mr: 1 }}
-                  variant="square"
-                />
-                <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#2c3e50' }}>
-                  Fire
-                </Typography>
-              </Box>
+ <Box
+      sx={{ml:-2,mb:6,
+        p: 2.5,
+        borderRadius: 3,
+        backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+        color: isDarkMode ? '#ecf0f1' : '#2c3e50',
+        boxShadow: isDarkMode
+          ? '8px 8px 16px rgba(0,0,0,0.3), -8px -8px 16px rgba(255,255,255,0.05)'
+          : '8px 8px 16px rgba(0,0,0,0.1), -8px -8px 16px rgba(255,255,255,0.6)',
+        maxWidth: 340,
+        height: 213,
+        position: 'relative',
+        border: '1px solid #000',
+        transition: 'all 0.3s ease',
+        cursor: 'pointer',
+        fontFamily: "'Segoe UI', Roboto, sans-serif",
+        '&:hover': {
+          transform: 'scale(1.02)',
+          boxShadow: isDarkMode
+            ? '10px 10px 20px rgba(0,0,0,0.4), -10px -10px 20px rgba(255,255,255,0.05)'
+            : '10px 10px 20px rgba(0,0,0,0.15), -10px -10px 20px rgba(255,255,255,0.6)',
+        },
+      }}
+    >
+      {/* Header: Match Title + Theme Toggle */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h6" fontWeight="bold">
+          Daily Match
+        </Typography>
+        <Box
+          onClick={toggleTheme}
+          sx={{
+            width: 36,
+            height: 20,
+            backgroundColor: '#1d4d99',
+            borderRadius: '10px',
+            position: 'relative',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <Box
+            sx={{
+              width: 14,
+              height: 14,
+              backgroundColor: isDarkMode ? '#fff' : '#fff',
+              borderRadius: '50%',
+              position: 'absolute',
+              top: '50%',
+              left: isDarkMode ? 4 : 'auto',
+              right: isDarkMode ? 'auto' : 4,
+              transform: 'translateY(-50%)',
+              transition: 'all 0.3s ease',
+            }}
+          />
+        </Box>
+      </Box>
 
-              {/* Team 2 */}
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar
-                  src="/assets/storm.gif"
-                  alt="Storm"
-                  sx={{ width: 22, height: 16, mr: 1 }}
-                  variant="square"
-                />
-                <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#2c3e50' }}>
-                  Storm
-                </Typography>
-              </Box>
+      {/* Team 1 */}
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+        <Avatar
+          src="/assets/fire.gif"
+          alt="Fire"
+          sx={{ width: 24, height: 18, mr: 1 }}
+          variant="square"
+        />
+        <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#e74c3c' }}>
+          Fire
+        </Typography>
+      </Box>
 
-              {/* Match Status */}
-              <Typography
-                sx={{
-                  color: '#c0392b',
-                  fontSize: 13,
-                  mt: 2,
-                  fontWeight: 500,
-                }}
-              >
-                Daily match starts at 5:20 PM if only if there is no Rain for more click Weather
-              </Typography>
+      {/* Team 2 */}
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+        <Avatar
+          src="/assets/storm.gif"
+          alt="Storm"
+          sx={{ width: 24, height: 18, mr: 1 }}
+          variant="square"
+        />
+        <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#2980b9' }}>
+          Storm
+        </Typography>
+      </Box>
 
-              {/* Schedule Label */}
-              <Typography
-                onClick={handleOpenDialog}
-                sx={{
-                  position: 'absolute',
-                  marginTop: 12,
-                  bottom: 10,
-                  right: 14,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#7f8c8d',
-                  cursor: 'pointer',
-                  '&:hover': { textDecoration: 'underline', color: '#2980b9' },
-                }}
-              >
-                WEATHER
-              </Typography>
+      {/* Match Info */}
+      <Typography
+        sx={{
+          fontSize: 13,
+          mt: 2,
+          fontWeight: 500,
+          lineHeight: 1.5,
+        }}
+      >
+        Daily match starts at <strong>5:20 PM</strong> — only if there's no rain.
+        Click below to check weather updates.
+      </Typography>
 
-            </Box>
+      {/* Weather clickable text */}
+      <Typography
+        onClick={handleOpenDialog}
+        sx={{
+          position: 'absolute',
+          bottom: 12,
+          right: 14,
+          fontSize: 12,
+          fontWeight: 600,
+          color: '#7f8c8d',
+          cursor: 'pointer',
+          '&:hover': { color: '#2980b9', textDecoration: 'underline' },
+        }}
+      >
+        WEATHER
+      </Typography>
+    </Box>
 
             <Dialog
               open={open}
@@ -508,43 +526,7 @@ useEffect(() => {
       </div>
 
       <div className="App">
-        <div className="container" style={{ marginTop: '20px' }}>
-          <div className="stats">
-            <p>Heads: {heads}</p>
-            <p>Tails: {tails}</p>
-          </div>
-
-          <div className="coin" ref={coinRef}>
-            <div className="heads">
-              <img
-                src="https://raw.githubusercontent.com/AsmrProg-YT/100-days-of-javascript/c82f3949ec4ba9503c875fc0fa7faa4a71053db7/Day%20%2307%20-%20Flip%20a%20Coin%20Game/heads.svg"
-                alt="Heads"
-              />
-            </div>
-            <div className="tails">
-              <img
-                src="https://raw.githubusercontent.com/AsmrProg-YT/100-days-of-javascript/c82f3949ec4ba9503c875fc0fa7faa4a71053db7/Day%20%2307%20-%20Flip%20a%20Coin%20Game/tails.svg"
-                alt="Tails"
-              />
-            </div>
-          </div>
-
-          <div className="coin-buttons">
-            <button onClick={flipCoin} style={{
-              backgroundColor: '#d32f2f',
-              color: 'white',
-              marginRight: '8px'
-            }} ref={flipBtnRef}>Flip Coin</button>
-            <button style={{
-              backgroundColor: 'rgb(255, 255, 255)',
-              border: '1px solid #1f8944',
-              color: '#419c3e'
-            }} onClick={resetGame}>Reset</button>
-            <audio ref={flipSoundRef}>
-              <source src="/assets/coin-flip-88793.mp3" type="audio/mpeg" />
-            </audio>
-          </div>
-        </div>
+    <CoinToss/>
 <Box sx={{mb:-8, mt:10}}>
 <Typography fontFamily="'Pacifico', cursive" fontSize="1.6rem" color="#c74859" marginLeft={'125px'}>
   Explore Now
