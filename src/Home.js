@@ -151,7 +151,7 @@ useEffect(() => {
           ))}
         </Box>
       </Box>
-      <div style={{ marginLeft: '60px', marginTop: '10px', marginBottom: '28px', backgroundColor: '' }}>
+      <div style={{ marginLeft: '45px', marginTop: '10px', marginBottom: '28px', backgroundColor: '' }}>
         <Typography
           sx={{
             textAlign: 'center',
