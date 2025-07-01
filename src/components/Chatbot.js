@@ -191,7 +191,7 @@ const Chatbot = ({ onClose }) => {
         {/* Buttons */}
       <>
   <Grid container   spacing={1} // This sets both row and column gaps
-  rowSpacing={2}  justifyContent="center" alignItems="center" sx={{ mb: 2, mt: 17 }}>
+  rowSpacing={2}  justifyContent="center" alignItems="center" sx={{ mb: 2, mt: 2 }}>
     {Object.keys(infoData).map((key) => (
       <Grid item key={key} xs="auto">
         <Button
