@@ -1,17 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Typography, Box, Tooltip, Avatar, Dialog, DialogContent } from '@mui/material';
+import { Typography, Box, Tooltip, Avatar, Dialog, DialogContent ,Fade} from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
-import img1 from './images/1.jpg';
-import img2 from './images/2.jpg';
-import img3 from './images/3.jpg';
-import img4 from './images/4.jpg';
-import img5 from './images/5.jpg';
-import img6 from './images/6.jpg';
-import img7 from './images/7.jpg';
-import img8 from './images/8.jpg';
-import img9 from './images/9.jpg';
-import img10 from './images/10.jpg';
-import img11 from './images/11.jpg';
 import './App.css';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
@@ -33,18 +22,33 @@ const Home = () => {
   // const [weather, setWeather] = useState(null);
   const [open, setOpen] = useState(false);
   const coinRef = useRef(null);
+  const [currentTip, setCurrentTip] = useState(0);
    const [isDarkMode, setIsDarkMode] = useState(false);
   const [weather, setWeather] = useState(null);
- const [currentImageIndex, setCurrentImageIndex] = useState(0);
- const profileImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+const cricketTips = [
+  "🏏 Play with soft hands to control ground shots better.",
+  "🎯 Keep your eyes on the ball till the last moment.",
+  "🧤 Always wear proper grip gloves for better bat control.",
+  "🔥 Stretch before matches to avoid cramps and injuries.",
+  "📐 Stay low while fielding to improve reaction time.",
+  "⏱️ Don’t rush shots – time the ball, not hit it hard.",
+  "🌬️ Use wind direction to your advantage while bowling.",
+  "🔄 Practice rotating strike to keep scoreboard moving.",
+  "💡 Focus on footwork – it's the key to good batting.",
+  "🧠 Study the pitch before choosing bowlers or shots."
+];
+
+
+  
 
 useEffect(() => {
   const interval = setInterval(() => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % profileImages.length);
-  }, 2000); // Change every 2 seconds
+    setCurrentTip((prev) => (prev + 1) % cricketTips.length);
+  }, 5000);
 
   return () => clearInterval(interval);
-}, [profileImages.length]);
+}, [cricketTips.length]);
+
 
 
   const images = [
@@ -111,6 +115,7 @@ useEffect(() => {
         coinRef={coinRef}
         onLogout={handleLogout}
       />
+      
       <Box
         sx={{
           overflow: 'hidden',
@@ -151,7 +156,77 @@ useEffect(() => {
           ))}
         </Box>
       </Box>
-      <div style={{ marginLeft: '45px', marginTop: '10px', marginBottom: '28px', backgroundColor: '' }}>
+
+
+
+
+<div style={{ textAlign: 'center', marginTop: '-47px', marginLeft:'-45px' }}>
+  <img
+    src="assets/stric.png"
+    style={{ width: '35vh', height: '30vh', marginLeft: '60px' }}
+    alt="StricBuzz Logo"
+  />
+<div
+  style={{
+    fontSize: '38px',
+    color: 'white',
+    marginTop: '-70px',
+    marginLeft: 147,
+    display: 'flex',
+    gap: '-2px', // This doesn't work directly; use letterSpacing below instead
+    fontFamily: `'Pacifico', cursive`,
+  }}
+>
+  {'StricBuzz'.split('').map((char, i) => (
+    <span
+      key={i}
+      style={{
+        animation: `glowLetter 2s ease-in-out infinite`,
+        animationDelay: `${i * 0.15}s`,
+        textShadow: `
+          0 0 5px #ff0000,
+          0 0 10px #ff0000,
+          0 0 15px #ff0000,
+          0 0 20px #ff0000
+        `,
+        letterSpacing: '5px', // Pull letters closer to preserve cursive look
+        fontFamily: `'Pacifico', cursive`, // Force font on each span
+      }}
+    >
+      {char}
+    </span>
+  ))}
+</div>
+
+<style>
+{`
+@keyframes glowLetter {
+  0%, 100% {
+    opacity: 0.8;
+    text-shadow:
+      0 0 5px #ff0000,
+      0 0 10px #ff0000,
+      0 0 15px #ff0000,
+      0 0 20px #ff0000;
+  }
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 10px #ff0000,
+      0 0 20px #ff0000,
+      0 0 30px #ff0000,
+      0 0 40px #ff0000;
+  }
+}
+`}
+</style>
+
+
+
+</div>
+
+
+      <div style={{ marginLeft: '45px', marginTop: '57px', marginBottom: '28px', backgroundColor: '' }}>
         <Typography
           sx={{
             textAlign: 'center',
@@ -527,7 +602,8 @@ useEffect(() => {
 
       <div className="App">
     <CoinToss/>
-<Box sx={{mb:-8, mt:10}}>
+ 
+{/* <Box sx={{mb:-8, mt:10}}>
 <Typography fontFamily="'Pacifico', cursive" fontSize="1.6rem" color="#c74859" marginLeft={'125px'}>
   Explore Now
 </Typography>
@@ -559,10 +635,52 @@ useEffect(() => {
  
 
 
-</Box>
+</Box> */}
         <MatchScore />
+           <Box
+  sx={{
+    mt: 4,
+    mb: 8,
+    px: 4,
+    py: 3,
+    borderRadius: 3,
+    background: 'linear-gradient(135deg, #ffffff, #f1f5f9)', // Clean light background
+    color: '#1e293b',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    textAlign: 'center',
+    maxWidth: 420,
+    width: '85%',
+    mx: 'auto',
+    border: '6px solid #cbd5e1', // Added border width and soft color
+    ml:4
+  }}
+>
+  <Typography
+    variant="h6"
+    fontWeight={600}
+    gutterBottom
+    sx={{ color: '#0f172a' }}
+  >
+    🧠 Tip of the Day
+  </Typography>
+
+  <Fade in={true} key={currentTip} timeout={500}>
+    <Typography
+      variant="body1"
+      fontStyle="italic"
+      sx={{
+        fontSize: '1.05rem',
+        color: '#334155',
+        lineHeight: 1.6,
+      }}
+    >
+      {cricketTips[currentTip]}
+    </Typography>
+  </Fade>
+</Box>
         <MatchHistory/>
         <UpdateMatchScore onUpload={(scoreData) => console.log('Score data uploaded:', scoreData)} />
+        
         <Footer />
 
         {showChatbot ? (

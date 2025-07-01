@@ -9,20 +9,18 @@ import {
   Typography,
   AppBar, 
   Toolbar,
-  Box,
+  Box,Divider,
   Button as MUIButton,
 } from '@mui/material';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SettingsIcon from '@mui/icons-material/Settings';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 import menuIcon from '../images/menu.png';
-import { getAuth, signOut } from 'firebase/auth'; // make sure this is at the top
-import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
-import GamesIcon from '@mui/icons-material/Games';
+import SportsCricketIcon from '@mui/icons-material/SportsCricket';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ImageIcon from '@mui/icons-material/Image';
 const Navbar = ({
 
   drawerOpen,
@@ -32,7 +30,6 @@ const Navbar = ({
   setHeads,
   setTails,
   coinRef,
-  onLogout, // new prop callback to notify parent about logout
 }) => {  
 
   const resetGame = () => {
@@ -52,7 +49,7 @@ const navItems = [
 ];
   return (
     <>
-      <AppBar position="fixed" style={{ background: 'white', zIndex: 1300, top: 0, left: 0, right: 0, }}>
+      <AppBar position="fixed" style={{ background: 'white', zIndex: 1300, top: -10, left: 0, right: 0,height:"70px" }}>
 
         <Toolbar>
               <IconButton edge="start" sx={{ color: 'black' }} onClick={() => setDrawerOpen(true)}>
@@ -61,6 +58,7 @@ const navItems = [
     alt="Menu"
     width="24"
     height="24"
+    style={{marginTop:22}}
   />
 </IconButton>
 
@@ -74,7 +72,7 @@ const navItems = [
     whiteSpace: 'nowrap',
     padding: '10px 0',
     borderBottom: 'none',
-    scrollbarWidth: 'none',
+    scrollbarWidth: 'none',marginTop:22
   }}
 >
   {navItems.map(({ label, path }) => (
@@ -121,7 +119,7 @@ const navItems = [
 
 
         <Box width={300} padding={2} ml={-2} borderRadius={40}>
-          <Box mt={-1} mb={1} pb={1} style={{ borderBottom: 'none' }}>
+          <Box mt={-0.6} mb={1} pb={1} style={{ borderBottom: 'none' }}>
          <Box display="flex" alignItems="center" gap={1.5} pl={2} py={1}>
   <SettingsIcon sx={{ color: '#2c3e50', fontSize: 26 }} />
   <Typography
@@ -140,77 +138,54 @@ const navItems = [
 
           </Box>
 
-<List component="nav" sx={{ px: 2, pt: 1, ml: -0.5,mt:2  }}>
+<List component="nav" sx={{ px: 2, pt: 2 }}>
   <ListItem button onClick={() => navigate('/profilepage')}>
-    <ListItemIcon sx={{ minWidth: 40 }}> {/* slightly less than default 56 */}
-      <ManageAccountsIcon sx={{ color: '#3f51b5' }} />
+    <ListItemIcon sx={{ minWidth: 40 }}>
+    <AccountCircleIcon sx={{ color: '#0E1F27', fontSize: 28 }} />
     </ListItemIcon>
-    <ListItemText
-      primary="Profile"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="Profile" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 
   <ListItem button onClick={() => navigate('/snaps')}>
     <ListItemIcon sx={{ minWidth: 40 }}>
-      <PhotoCameraFrontIcon sx={{ color: '#ff5722' }} />
+      <ImageIcon sx={{ color: '#e91e63', fontSize: 26 }} />
     </ListItemIcon>
-    <ListItemText
-      primary="Snaps"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="Snaps" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 
   <ListItem button onClick={() => navigate('/game')}>
     <ListItemIcon sx={{ minWidth: 40 }}>
-      <GamesIcon sx={{ color: '#1e88e5' }} />
+      <SportsCricketIcon sx={{ color: '#1e88e5' }} />
     </ListItemIcon>
-    <ListItemText
-      primary="Game"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="Game" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 
-  {/* <ListItem button onClick={() => navigate('/reelspage')}>
-    <ListItemIcon sx={{ minWidth: 40 }}>
-      <MovieFilterIcon sx={{ color: '#e91e63' }} />
-    </ListItemIcon>
-    <ListItemText
-      primary="Shorts"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
-  </ListItem> */}
+  <Divider sx={{ my: 1 }} />
 
   <ListItem button component="a" href="https://www.youtube.com/results?search_query=cricket+highlights" target="_blank">
     <ListItemIcon sx={{ minWidth: 40 }}>
       <YouTubeIcon sx={{ color: '#FF0000' }} />
     </ListItemIcon>
-    <ListItemText
-      primary="YouTube"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="YouTube" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 
-  <ListItem button component="a" href="https://www.facebook.com/" target="_blank">
+  <ListItem button component="a" href="https://www.instagram.com/stricbuzz?utm_source=qr&igsh=YnpodG42dG5lbGtn" target="_blank">
     <ListItemIcon sx={{ minWidth: 40 }}>
-      <FacebookIcon sx={{ color: '#3b5998' }} />
+      <InstagramIcon sx={{ color: '#E1306C' }} />
     </ListItemIcon>
-    <ListItemText
-      primary="Facebook"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="Instagram" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 
   <ListItem button component="a" href="https://twitter.com/search?q=cricket" target="_blank">
     <ListItemIcon sx={{ minWidth: 40 }}>
       <TwitterIcon sx={{ color: '#1DA1F2' }} />
     </ListItemIcon>
-    <ListItemText
-      primary="Twitter"
-      primaryTypographyProps={{ sx: { color: '#0f0f0f', fontWeight: 500 } }}
-    />
+    <ListItemText primary="Twitter" primaryTypographyProps={{ sx: { fontWeight: 500 } }} />
   </ListItem>
 </List>
+
+  {/* Social Icons (YouTube, Instagram, Twitter) remain same */}
+
 
 
 {/* Divider between nav and settings */}
@@ -247,7 +222,7 @@ const navItems = [
   <Box sx={{ flexGrow: 1 }} />
 
   {/* Action Buttons */}
-<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 , ml:1}}>
 <MUIButton
   variant="outlined"
   onClick={resetGame}
@@ -277,43 +252,7 @@ const navItems = [
     Clear Stats
   </MUIButton>
 
-<MUIButton
-  variant="outlined"
-onClick={async () => {
-  const auth = getAuth();
-  try {
-    await signOut(auth); // Firebase logout
-    localStorage.removeItem('authenticated'); // optional: if you're using it elsewhere
-    if (onLogout) onLogout(); // notify parent if needed
-    navigate('/userlogin'); // or wherever your login route is
-  } catch (error) {
-    console.error('Logout failed:', error);
-    // Optionally show a toast/snackbar for error
-  }
-}}
 
-  
-  endIcon={<ArrowForwardIcon />}
-  sx={{
-    fontWeight: 600,
-    height:'45px',
-    width:'105px',
-    textTransform: 'none',
-    fontSize: '0.85rem', // smaller text
-    borderRadius: '14px', // slightly less rounded
-    py: 1,                // less vertical padding
-    px: 1.5,              // less horizontal padding
-    color: 'white',
-    background: 'linear-gradient(145deg,rgb(206, 68, 68),rgb(221, 72, 72)) border-box',
-    border: '2px solid transparent',
-    backgroundOrigin: 'border-box',
-    backgroundClip: 'padding-box, border-box',
-    boxShadow: '0 4px 6px rgba(98, 78, 255, 0.2)', // smaller shadow
-    transition: 'all 0.3s ease-in-out',
-  }}
->
-  Logout
-</MUIButton>
 
 
 </Box>

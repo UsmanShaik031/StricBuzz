@@ -83,7 +83,7 @@ export default function MatchScore() {
   }}
 >
   <Typography variant="body1" color="error">
-    {error || "No match data available."}
+    {error || "No match data available Please Add or update match score below 👇."}
   </Typography>
 </Paper>
 

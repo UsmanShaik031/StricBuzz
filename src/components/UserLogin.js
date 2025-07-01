@@ -59,7 +59,8 @@ const UserLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   // const [error, setError] = useState('');
- 
+ const [confirmPassword, setConfirmPassword] = useState('');
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleTogglePassword = () => setShowPassword(!showPassword);
   const handleCloseSnackbar = () => setShowSnackbar(false);
   const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
@@ -106,18 +107,27 @@ const variants = {
 const navigate = useNavigate();
 
 const handleAuth = async () => {
-  if (!email || !password) {
+  // Basic field check
+  if (!email || !password || (tab === 'register' && !confirmPassword)) {
     setSnackbarSeverity('error');
     setSnackbarMessage('Please fill in all required fields.');
     setSnackbarOpen(true);
     return;
   }
 
+  // ✅ Confirm password check only during sign-up
+  if (tab === 'register' && password !== confirmPassword) {
+    setSnackbarSeverity('error');
+    setSnackbarMessage('Passwords do not match.');
+    setSnackbarOpen(true);
+    return;
+  }
+
   try {
-    // Set persistence to local storage to ensure auth state is saved properly
     await setPersistence(auth, browserLocalPersistence);
 
     if (tab === 'login') {
+      // Sign in logic
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -133,9 +143,10 @@ const handleAuth = async () => {
       setSnackbarSeverity('success');
       setSnackbarMessage('Login successful!');
       setSnackbarOpen(true);
-
       navigate('/home');
+
     } else {
+      // Sign up logic
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -145,27 +156,23 @@ const handleAuth = async () => {
         createdAt: new Date(),
       });
 
-      await user.reload(); // force refresh user info before verification email
-
+      await user.reload();
       await sendEmailVerification(user);
-   setSnackbarSeverity('success');
-      setSnackbarMessage('Registration successful! A verification email has been sent.');
-      setSnackbarOpen(true);
-      // Small delay to ensure Firebase updates internal auth state
-      await new Promise(res => setTimeout(res, 500));
-
-      // Sign out immediately after signup
-      await signOut(auth);
 
       setSnackbarSeverity('success');
       setSnackbarMessage('Registration successful! A verification email has been sent.');
       setSnackbarOpen(true);
-      
-      // Optional: switch to login tab and clear input fields after signup
+
+      await new Promise(res => setTimeout(res, 500));
+      await signOut(auth);
+
+      // Reset form after registration
       setTab('login');
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
     }
+
   } catch (err) {
     console.error("Authentication error:", err);
     setSnackbarSeverity('error');
@@ -197,7 +204,9 @@ const handleAuth = async () => {
   }
 };
 
-
+const handleToggleConfirmPassword = () => {
+  setShowConfirmPassword((prev) => !prev);
+};
 
 
   return (
@@ -325,7 +334,71 @@ const handleAuth = async () => {
           '50%': { transform: 'scale(1.3)', opacity: 0.2 }
         }
       }} />
+    <Box
+  sx={{
+    position: 'relative', // ✅ Changed from fixed
+    top: 0,
+    mb:-20,
+    left: 0,
+    userSelect: 'none',
+    backgroundColor: 'transparent',
+    p: 1,
+    borderRadius: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 2,
+    width: '100%',
+    flexWrap: 'wrap', // Responsive
+    zIndex: 10,
+  }}
+>
+  {/* Text Block */}
+  <Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 900,
+          fontSize: '1.9rem',
+          lineHeight: 1.3,
+          color: '#c74859',
+        }}
+      >
+        🏏𝐒𝐭𝐫𝐢𝐜𝐁𝐮𝐳𝐳
+      </Typography>
+    </Box>
 
+    <Typography
+      variant="body2"
+      sx={{
+        fontWeight: 500,
+        fontSize: '0.9rem',
+        mt: 0.5,
+        ml: 0.5,
+        opacity: 0.8,
+        color: 'black',
+      }}
+    >
+      Best Street Cricket Experience Ever
+    </Typography>
+  </Box>
+
+  {/* Video */}
+  <Box
+    component="video"
+    src="/assets/Wicket out.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    sx={{
+      width: 118,
+      height: 118,
+      objectFit: 'contain',
+    }}
+  />
+</Box>
       <Box
         sx={{
           minHeight: '100vh',
@@ -342,85 +415,14 @@ const handleAuth = async () => {
         {/* Auth Toggle Button */}
         <Box sx={{  top: 35, right: 30, zIndex: 9999 }}>
           {/* Site Title + Description on Left */}
-        <Box
-  sx={{
-    position: 'fixed',
-    top: 20,
-    left: 5,
-    zIndex: 9999,
-    userSelect: 'none',
-    backgroundColor: 'transparent',
-    p: 1,
-    borderRadius: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 2,
-  }}
->
-  {/* Text Block: Logo, Title, Subtitle */}
-  <Box 
-    >
-    {/* Logo + Title */}
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 ,}}>
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 900,
-          fontSize: '1.9rem',
-          lineHeight: 1.3,
-          color: '#c74859',
-        }}
-      >
-        🏏𝐒𝐭𝐫𝐢𝐜𝐁𝐮𝐳𝐳
-      </Typography>
-    </Box>
+    
 
-    {/* Subtitle */}
-    <Typography
-      variant="body2"
-      sx={{
-        fontWeight: 500,
-        fontSize: '0.9rem',
-        mt: 0.5,
-        ml: 0.5,
-        opacity: 0.8,
-        color: 'black',
-      mb:4
-      }}
-    >
-      Best Street Cricket Experience Ever
-    </Typography>
-  </Box>
-
-  {/* Video on the right */}
-  <Box
-    component="video"
-    src="/assets/Wicket out.mp4" // Replace with your actual transparent video path
-    autoPlay
-    loop
-    muted
-    playsInline
-    sx={{
-      mt:-4
-,      width: 118,
-      height: 118,
-      objectFit: 'contain',
-      mb:4
-    }}
-  />
-</Box>
 
 
 
           {/* Auth Toggle Button below on Right */}
           <Box
-            sx={{
-              position: 'fixed',
-              top: 80,      // ~30px + height of title+desc (adjust if needed)
-              right: 30,
-              zIndex: 9999,
-            }}
+           
           >
 
           </Box>
@@ -478,211 +480,265 @@ const handleAuth = async () => {
     transformStyle: 'preserve-3d',
   }}
 >
-            <Paper
-              elevation={3}
-              sx={{
-                p: 4,
-                mt: -36,
-                borderRadius: 5,
-                backgroundColor: 'none',
-                backdropFilter: 'blur(25px)',
-                boxShadow: 'none',
-                textAlign: 'center'
-              }}
+           <Box
+  sx={{
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    WebkitOverflowScrolling: 'touch',
+    px: 2,
+    pt: 4,
+    scrollBehavior: 'smooth',
+    maskImage: 'linear-gradient(to bottom, black 95%, transparent)',
+  }}
+>
+  <Paper
+    elevation={3}
+    sx={{
+      p: 4,
+      mt: -36,
+      border:'none',
+      boxShadow:'none',
+      borderRadius: 5,
+      backgroundColor: 'rgba(255,255,255,0.75)',
+      backdropFilter: 'blur(25px)',
+      
+      textAlign: 'center',
+      overflow: 'hidden',
+      position: 'relative',
+      zIndex: 2
+    }}
+  >
+    <Typography variant="h5" fontWeight="bold" mb={2} mt={32}>
+      {tab === 'login' ? 'Welcome Back' : 'Create Account'}
+    </Typography>
 
-            >
-              <Typography variant="h5" fontWeight="bold" mb={2}mt={32}>
-                {tab === 'login' ? 'Welcome Back' : 'Create Account'}
-              </Typography><Button
-                variant="text"
-                disableRipple
-                onClick={() => setTab(tab === 'login' ? 'register' : 'login')}
-                sx={{
-                  fontWeight: 'bold',
-                  color: '#7b1fa2',
-                  fontSize: '1.1rem',
-                  mb: '10px',
-                  textTransform: 'uppercase',
-                  '&:hover': { textDecoration: 'none' },
-                }}
-              >
-                {tab === 'login' ? 'Click to SIGN UP' : 'Click to SIGN IN'}
-              </Button>
+    <Typography sx={{ fontSize: '1.1rem', textAlign: 'center', mb: 4 }}>
+      {tab === 'login' ? (
+        <>
+          Don’t have an account? Click here to{' '}
+          <Box
+            component="span"
+            onClick={() => setTab('register')}
+            sx={{
+              color: '#d32f2f',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              '&:hover': {
+                color: '#b71c1c',
+              },
+            }}
+          >
+            SIGN UP
+          </Box>
+        </>
+      ) : (
+        <>
+          Already have an account? Click here to{' '}
+          <Box
+            component="span"
+            onClick={() => setTab('login')}
+            sx={{
+              color: '#1976d2',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              '&:hover': {
+                color: '#0d47a1',
+              },
+            }}
+          >
+            SIGN IN
+          </Box>
+        </>
+      )}
+    </Typography>
 
+    {/* Email and Password fields */}
+    <TextField
+      fullWidth
+      placeholder="Email"
+      type="email"
+      variant="outlined"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      sx={inputStyle}
+      autoComplete="off"
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <Email />
+          </InputAdornment>
+        ),
+      }}
+    />
 
-
-              <TextField
-                fullWidth
-                placeholder="Email"
-                type="email"
-                variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                sx={inputStyle}
-                autoComplete="off"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                fullWidth
-                placeholder="Password"
-                type={showPassword ? 'text' : 'password'}
-                variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                sx={inputStyle}
-                 autoComplete="new-password" 
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Lock />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleTogglePassword} edge="end">
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-
-
-
-              {tab === 'login' && !forgotPasswordMode && (
-                <Box textAlign="right" width="100%" mb={2}>
-                  <Typography
-                    variant="caption"
-                    color="primary"
-                    sx={{ cursor: 'pointer', fontWeight: 500 }}
-                    onClick={() => setForgotPasswordMode(true)}
-                  >
-                    Forgot?
-                  </Typography>
-                </Box>
-              )}
-
-
-              {forgotPasswordMode && (
-                <Box>
-                  <TextField
-                    fullWidth
-                    placeholder="Enter your email"
-                    type="email"
-                    variant="outlined"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    sx={inputStyle}
-                     autoComplete="off"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Email />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      mt: -1,
-                      mb: 1
-                      , display: 'flex',
-                      alignItems: 'center',
-                      ml: 1,
-                      gap: 2,
-                    }}
-                  >
-                    <Button
-                      size="small"
-                      sx={{
-                        color: '#757575', // medium gray
-                        fontWeight: 500,
-                        cursor: 'pointer',
-                        borderRadius: 20,
-                        px: 3,
-                        py: 0.6,
-                        textTransform: 'none', // lowercase as typed
-                        fontSize: '0.8rem',
-                        boxShadow: 'none',
-                        backgroundColor: 'transparent',
-                        '&:hover': {
-                          color: '#4caf50',
-                          backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                          boxShadow: 'none',
-                        },
-                        userSelect: 'none',
-                      }}
-                      onClick={handleSendResetEmail}
-                    >
-                      Send reset email
-                    </Button>
-
-                    {/* Vertical divider */}
-                    <Box
-                      sx={{
-                        width: '1px',
-                        height: 20,
-                        backgroundColor: '#ccc',
-                        mx: 1,
-                      }}
-                    />
-
-                    <Typography
-                      variant="caption"
-                      onClick={() => setForgotPasswordMode(false)}
-                      sx={{
-                        color: '#757575',
-                        fontWeight: 500,
-                        cursor: 'pointer',
-                        borderRadius: 20,
-                        px: 2,
-                        py: 0.6,
-                        transition: 'color 0.3s ease',
-                        '&:hover': {
-                          color: '#4caf50',
-                        },
-                        userSelect: 'none',
-                        fontSize: '0.8rem',
-                        textTransform: 'none',
-                      }}
-                    >
-                      Cancel
-                    </Typography>
-                  </Box>
-
-                </Box>
-              )}
+    <TextField
+      fullWidth
+      placeholder="Password"
+      type={showPassword ? 'text' : 'password'}
+      variant="outlined"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      sx={inputStyle}
+      autoComplete="new-password"
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <Lock />
+          </InputAdornment>
+        ),
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={handleTogglePassword} edge="end">
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
+    />
+{tab === 'register' && (
+  <TextField
+    fullWidth
+    placeholder="Confirm Password"
+    type={showConfirmPassword ? 'text' : 'password'}
+    variant="outlined"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    sx={inputStyle}
+    autoComplete="new-password"
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <Lock />
+        </InputAdornment>
+      ),
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={handleToggleConfirmPassword} edge="end">
+            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    }}
+  />
+)}
 
 
+    {/* Forgot password */}
+    {tab === 'login' && !forgotPasswordMode && (
+      <Box textAlign="right" width="100%" mb={2}>
+        <Typography
+          variant="caption"
+          color="primary"
+          sx={{ cursor: 'pointer', fontWeight: 500 }}
+          onClick={() => setForgotPasswordMode(true)}
+        >
+          Forgot?
+        </Typography>
+      </Box>
+    )}
 
+    {forgotPasswordMode && (
+      <Box>
+        <TextField
+          fullWidth
+          placeholder="Enter your email"
+          type="email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          sx={inputStyle}
+          autoComplete="off"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Box
+          sx={{
+            mt: -1,
+            mb: 1,
+            display: 'flex',
+            alignItems: 'center',
+            ml: 1,
+            gap: 2,
+          }}
+        >
+          <Button
+            size="small"
+            sx={{
+              color: '#757575',
+              fontWeight: 500,
+              cursor: 'pointer',
+              borderRadius: 20,
+              px: 3,
+              py: 0.6,
+              textTransform: 'none',
+              fontSize: '0.8rem',
+              boxShadow: 'none',
+              backgroundColor: 'transparent',
+              '&:hover': {
+                color: '#4caf50',
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+              },
+              userSelect: 'none',
+            }}
+            onClick={handleSendResetEmail}
+          >
+            Send reset email
+          </Button>
 
-              <Button
-                variant="contained"
-                onClick={handleAuth} // ✅ Updated this line
-                sx={{
-                  mt: 1,
-                  background: 'linear-gradient(to right, #7b1fa2, #512da8)',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  borderRadius: 30,
-                  py: 1.2,
-                  width:'150px',
-                  textTransform: 'uppercase',
-                  fontSize: '0.9rem',
-                  boxShadow: '0px 6px 15px rgba(123, 31, 162, 0.3)',
-                }}
-              >
-                {tab === 'login' ? 'Sign In' : 'Sign Up'}
-              </Button>
-   <Box
+          <Box sx={{ width: '1px', height: 20, backgroundColor: '#ccc', mx: 1 }} />
+
+          <Typography
+            variant="caption"
+            onClick={() => setForgotPasswordMode(false)}
+            sx={{
+              color: '#757575',
+              fontWeight: 500,
+              cursor: 'pointer',
+              borderRadius: 20,
+              px: 2,
+              py: 0.6,
+              transition: 'color 0.3s ease',
+              '&:hover': { color: '#4caf50' },
+              userSelect: 'none',
+              fontSize: '0.8rem',
+              textTransform: 'none',
+            }}
+          >
+            Cancel
+          </Typography>
+        </Box>
+      </Box>
+    )}
+
+    <Button
+      variant="contained"
+      onClick={handleAuth}
+      sx={{
+        mt: 1,
+        background: 'linear-gradient(to right, #7b1fa2, #512da8)',
+        color: 'white',
+        fontWeight: 'bold',
+        borderRadius: 30,
+        py: 1.2,
+        width: '150px',
+        textTransform: 'uppercase',
+        fontSize: '0.9rem',
+        boxShadow: '0px 6px 15px rgba(123, 31, 162, 0.3)',
+      }}
+    >
+      {tab === 'login' ? 'Sign In' : 'Sign Up'}
+    </Button>
+
+    {/* Social login */}
+    <Box
       sx={{
         border: 'none',
         borderRadius: 2,
@@ -693,7 +749,6 @@ const handleAuth = async () => {
         backgroundColor: 'transparent',
       }}
     >
-      {/* Divider with text in center */}
       <Box display="flex" alignItems="center" mb={2}>
         <Divider sx={{ flexGrow: 1 }} />
         <Typography sx={{ mx: 2, color: '#888' }} variant="body2">
@@ -702,21 +757,18 @@ const handleAuth = async () => {
         <Divider sx={{ flexGrow: 1 }} />
       </Box>
 
-      {/* Social Buttons */}
       <Box display="flex" justifyContent="center" gap={2}>
         <Button
           variant="outlined"
-        startIcon={<FcGoogle />} 
+          startIcon={<FcGoogle />}
           sx={{
             textTransform: 'none',
             backgroundColor: '#f1f6ff',
             borderRadius: 2,
             borderColor: '#e0e0e0',
-            color: '#000', // keep text black
+            color: '#000',
             width: 120,
-            '&:hover': {
-              backgroundColor: '#e3f2fd',
-            },
+            '&:hover': { backgroundColor: '#e3f2fd' },
           }}
         >
           Google
@@ -730,18 +782,18 @@ const handleAuth = async () => {
             backgroundColor: '#f1f6ff',
             borderRadius: 2,
             borderColor: '#e0e0e0',
-            color: '#1877F2', // Facebook blue text
+            color: '#1877F2',
             width: 120,
-            '&:hover': {
-              backgroundColor: '#e3f2fd',
-            },
+            '&:hover': { backgroundColor: '#e3f2fd' },
           }}
         >
           Facebook
         </Button>
       </Box>
     </Box>
-            </Paper>
+  </Paper>
+</Box>
+
           </motion.div>
         </AnimatePresence>
       </Box>
